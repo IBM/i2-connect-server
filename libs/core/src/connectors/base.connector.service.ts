@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject } from '@nestjs/common';
+import { Injectable, Logger, Inject, Scope } from '@nestjs/common';
 import { ConnectorConfigService } from '../config/config.service';
 import { IConnectorConfig } from '../config/marshalers/ConnectorConfigMarshaler';
 import { IConnectorConfigDto } from '../config/dto/ConnectorConfigDto';
@@ -18,7 +18,7 @@ import { ConnectorTransformService } from '../transforms/transform.service';
 import { UtilSettings, ISettingsItemData } from '../util/settings';
 import { ConnectorEnvironmentService } from '../settings/connector/connector.env.service';
 
-@Injectable()
+@Injectable({ scope: Scope.TRANSIENT })
 export class BaseConnectorService implements IBaseConnectorService {
 
     private _connectorId: string;
