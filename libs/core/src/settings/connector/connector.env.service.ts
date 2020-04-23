@@ -16,7 +16,8 @@ export class ConnectorEnvironmentService {
     }
 
     logPayloads(): boolean {
-        return this.configService.get<boolean>(ENV_CONN_LOGPAYLOADS)
+        const val = this.configService.get<string>(ENV_CONN_LOGPAYLOADS);
+        return val === 'true';
     }
     
 }
