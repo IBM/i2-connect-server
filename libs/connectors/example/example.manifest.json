@@ -1,0 +1,44 @@
+{
+    "id": "1111202e-016e-4920-b8ca-825c41d5df5e",
+    "version": "1.0.1",
+    "author": "IBM",
+    "name": "Example Connector",
+    "description": "An example connector based on that provided with i2 Analyze.",
+    "moduleFilePath": "/dist/apps/server/libs/connectors/example/src/example.connector.module.js",
+    "settings": [
+        {
+            "id": "i2.config",
+            "value": "./libs/connectors/example/static/config.json",
+            "type": "FILE"
+        },
+        {
+            "id": "i2.schemas",
+            "value": "./libs/connectors/example/static/schemas",
+            "type": "FOLDER",
+            "extensionFilter": "schema.xml"
+        },
+        {
+            "id": "i2.chartingschemes",
+            "value": "./libs/connectors/example/static/chartingschemes",
+            "type": "FOLDER",
+            "extensionFilter": "cs.xml"
+        },
+        {
+            "id": "i2.typemaps",
+            "value": "./libs/connectors/example/static/typemaps",
+            "type": "FOLDER",
+            "extensionFilter": "typemap.json"
+        },
+        {
+            "id": "i2.transforms",
+            "value": "./libs/connectors/example/static/transforms",
+            "type": "FOLDER",
+            "extensionFilter": "transform.json"
+        },
+        {
+            "id": "person.data.file",
+            "value": "./libs/connectors/example/data/people.json",
+            "type": "FILE"
+        }
+    ]
+}

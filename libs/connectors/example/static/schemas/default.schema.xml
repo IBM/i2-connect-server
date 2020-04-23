@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaFragment>
+	<ItemTypes>
+		<EntityTypes>
+			<EntityType Id="TWEET" Description="A tweet"
+				DisplayName="Tweet" Icon="Bird">
+				<PropertyGroupTypes />
+				<PropertyTypes>
+					<PropertyType Position="0" Mandatory="true"
+						MaximumLengthChars="280" SemanticTypeId="" DisplayName="Contents"
+						Description="The contents of the tweet" LogicalType="SINGLE_LINE_STRING" Id="TW1">
+						<PossibleValues />
+					</PropertyType>
+					<PropertyType Position="1" Mandatory="true"
+						SemanticTypeId="" DisplayName="User name"
+						Description="The originator of the tweet" LogicalType="SINGLE_LINE_STRING" Id="TW2">
+						<PossibleValues />
+					</PropertyType>
+					<PropertyType Position="2" Mandatory="true"
+						SemanticTypeId="" DisplayName="Length" Description="The length of the tweet"
+						LogicalType="INTEGER" Id="TW3">
+						<PossibleValues />
+					</PropertyType>
+				</PropertyTypes>
+			</EntityType>
+		</EntityTypes>
+		<LinkTypes></LinkTypes>
+	</ItemTypes>
+	<Id>000dfb1f-09b3-4ee6-9164-8de00ad4dbd7</Id>
+	<LabelingScheme Name="LE Core Labeling Scheme"
+		Id="8355f4c5-1444-4a2f-b4da-f9374fbd80e6">
+		<LabelDefinitions>
+			<LabelDefinition ItemTypeId="TWEET">
+				<LabelParts>
+					<LabelPart Value="TW2" LabelPartType="PROPERTY_TYPE" />
+				</LabelParts>
+			</LabelDefinition>
+		</LabelDefinitions>
+	</LabelingScheme>
+</SchemaFragment>

@@ -1,0 +1,16 @@
+{
+    "id": id,
+    "typeId": "i2.person",
+    "properties": {
+        "i2.firstName": forename,
+        "i2.lastName": surname,
+        "i2.dob": dob,
+        "i2.ssn": ssn,
+        "i2.age": $floor(($millis() - $toMillis(dob)) / 31557600000),
+        "i2.ssnIssuedOn": {
+            "localDateAndTime": issuedDateAndTime,
+            "timeZoneId": "Europe/London",
+            "isDST": false
+        }
+    }
+}

@@ -1,0 +1,76 @@
+{
+    "entityMappings": [
+        {
+            "id": "i2.person",
+            "schemaTypeId": "ET5",
+            "propertyMappings": [
+                {
+                    "id": "i2.id",
+                    "schemaPropertyId": "PER1"
+                },
+                {
+                    "id": "i2.firstName",
+                    "schemaPropertyId": "PER4"
+                },
+                {
+                    "id": "i2.middleName",
+                    "schemaPropertyId": "PER5"
+                },
+                {
+                    "id": "i2.lastName",
+                    "schemaPropertyId": "PER6"
+                },
+                {
+                    "id": "i2.dob",
+                    "schemaPropertyId": "PER9"
+                },
+                {
+                    "id": "i2.age",
+                    "schemaPropertyId": "PER12"
+                },
+                {
+                    "id": "i2.ssn",
+                    "schemaPropertyId": "PER99"
+                },
+                {
+                    "id": "i2.ssnIssuedOn",
+                    "schemaPropertyId": "PER102"
+                }
+            ]
+        },
+        {
+            "id": "i2.tweet",
+            "schemaTypeId": "TWEET",
+            "propertyMappings": [
+                {
+                    "id": "i2.contents",
+                    "schemaPropertyId": "TW1"
+                },
+                {
+                    "id": "i2.userName",
+                    "schemaPropertyId": "TW2"
+                },
+                {
+                    "id": "i2.length",
+                    "schemaPropertyId": "TW3"
+                }
+            ]
+        }
+    ],
+    "linkMappings": [
+        {
+            "id": "i2.associate",
+            "schemaTypeId": "LAS1",
+            "propertyMappings": [
+                {
+                    "id": "i2.id",
+                    "schemaPropertyId": "LAS2"
+                },
+                {
+                    "id": "i2.associationType",
+                    "schemaPropertyId": "LAS4"
+                }
+            ]
+        }
+    ]
+}

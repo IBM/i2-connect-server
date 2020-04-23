@@ -1,0 +1,156 @@
+{
+    "defaultValues": {
+        "timeZoneId": "Europe/London",
+        "entityTypeId": "i2.person",
+        "linkTypeId": "i2.associate",
+        "linkDirection": "NONE"
+    },
+    "schemaUrl": "/schema",
+    "chartingSchemesUrl": "/chartingSchemes",
+    "services": [
+        {
+            "id": "exampleSearch",
+            "name": "Example Search",
+            "description": "An example that queries a data set of people by searching for text in their names. You can also use '*' to retrieve all data.",
+            "acquireUrl": "/exampleSearch/acquire",
+            "validateUrl": "/exampleSearch/validate",
+            "clientConfigType": "FORM",
+            "clientConfigId": "exampleForm",
+            "resultItemTypeIds": [
+                "i2.person",
+                "i2.associate"
+            ]
+        },
+        {
+            "id": "exampleSeededSearch1",
+            "name": "Example Seeded Search 1 ('find like this')",
+            "description": "An example that queries a data set of people to find targets similar to those supplied as seeds, according to their given name, surname, or year of birth.",
+            "acquireUrl": "/exampleSeededSearch1/acquire",
+            "clientConfigType": "FORM",
+            "clientConfigId": "exampleOptionsForm",
+            "resultItemTypeIds": [
+                "i2.person"
+            ],
+            "seedConstraints": {
+                "seedTypes": {
+                    "allowedTypes": "ENTITY",
+                    "itemTypes": [
+                        {
+                            "id": "i2.person",
+                            "min": 1,
+                            "max": 1
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "exampleSeededSearch2",
+            "name": "Example Seeded Search 2 ('expand')",
+            "description": "An example that queries a data set of people to find the friends of those supplied as seeds.",
+            "acquireUrl": "/exampleSeededSearch2/acquire",
+            "clientConfigType": "NONE",
+            "resultItemTypeIds": [
+                "i2.person",
+                "i2.associate"
+            ],
+            "seedConstraints": {
+                "connectorIds": [
+                    "example-connector"
+                ],
+                "seedTypes": {
+                    "allowedTypes": "ENTITY",
+                    "itemTypes": [
+                        {
+                            "id": "i2.person",
+                            "min": 1,
+                            "max": 10
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "exampleSeededSearch3",
+            "name": "Example Seeded Search 3 ('edit property values')",
+            "description": "An example that populates or replaces the middle names of people supplied as seeds.",
+            "acquireUrl": "/exampleSeededSearch3/acquire",
+            "clientConfigType": "NONE",
+            "resultItemTypeIds": [
+                "i2.person"
+            ],
+            "seedConstraints": {
+                "seedTypes": {
+                    "allowedTypes": "ENTITY",
+                    "itemTypes": [
+                        {
+                            "id": "i2.person",
+                            "min": 1,
+                            "max": 10
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "exampleSeededSearch4",
+            "name": "Example Seeded Search 4 ('modify links')",
+            "description": "An example that modifies the direction of any link supplied as a seed to be 'AGAINST'",
+            "acquireUrl": "/exampleSeededSearch4/acquire",
+            "clientConfigType": "NONE",
+            "seedConstraints": {
+                "seedTypes": {
+                    "allowedTypes": "LINK"
+                },
+                "min": 1,
+                "max": 10
+            }
+        },
+        {
+            "id": "exampleSchemaExtension",
+            "name": "Example Schema Extension",
+            "description": "An example that returns some fixed data of an entity type that the connector defines.",
+            "acquireUrl": "/exampleSchemaExtension/acquire",
+            "clientConfigType": "NONE",
+            "resultItemTypeIds": [
+                "i2.tweet"
+            ]
+        }
+    ],
+    "clientConfigs": [
+        {
+            "id": "exampleForm",
+            "config": {
+                "sections": [
+                    {
+                        "conditions": [
+                            {
+                                "id": "term",
+                                "label": "Name contains",
+                                "mandatory": true,
+                                "logicalType": "SINGLE_LINE_STRING"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "exampleOptionsForm",
+            "config": {
+                "sections": [
+                    {
+                        "conditions": [
+                            {
+                                "id": "useYearOfBirth",
+                                "label": "Consider year of birth",
+                                "mandatory": false,
+                                "logicalType": "BOOLEAN"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
