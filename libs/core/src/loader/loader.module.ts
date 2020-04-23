@@ -19,12 +19,12 @@ export class LoadersModule {
         // regular useFactory pattern.
         const loaderService = await LoaderServiceFactory.createLoaderServiceAsync(CONNECTORS_HOME);
 
-        const connectorModules = await (loaderService as IConnectorModulesFactory).createConnectorModules();
+        // const connectorModules = await (loaderService as IConnectorModulesFactory).createConnectorModules();
         return {
             module: LoadersModule,
             imports: [
                 ConnectorsModule.registerAsync(loaderService as IConnectorProvidersFactory),
-                ...connectorModules
+                // ...connectorModules
             ],
         };
     }

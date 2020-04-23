@@ -4,7 +4,6 @@
     "author": "IBM",
     "name": "Example Connector",
     "description": "An example connector based on that provided with i2 Analyze.",
-    "moduleFilePath": "/dist/apps/server/libs/connectors/example/src/example.connector.module.js",
     "settings": [
         {
             "id": "i2.config",

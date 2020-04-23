@@ -90,9 +90,11 @@ export class ConnectorSettingsMarshaler {
         if (!dto.author) {
             throw new Error("Connector settings has no author property defined.");
         }
+        /*
         if (!dto.moduleFilePath) {
             throw new Error("Connector settings has no moduleFilePath property defined.");
         }
+        */
         if (!dto.settings) {
             throw new Error("Connector settings has no settings property defined.");
         }
