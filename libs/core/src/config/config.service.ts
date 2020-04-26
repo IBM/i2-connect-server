@@ -3,9 +3,10 @@ import { IConnectorConfig, ConnectorConfigMarshaler, IDefaultValues, IService, I
 import { IConnectorConfigDto } from "./dto/ConnectorConfigDto";
 import { IConnectorSetting } from '../manifest/marshalers/ConnectorManifestMarshaler';
 import { UtilSettings, ISettingsItemData } from '../util/settings';
-import { DEFAULT_QUERY_SITE_ID, DEFAULT_QUERY_STRICT } from '../constants';
+import { DEFAULT_QUERY_SITE_ID, DEFAULT_QUERY_STRICT, DEFAULT_QUERY_VERSION } from '../constants';
 import { ITypeMap } from '../typemap/marshalers/TypeMapMarshaler';
 import { ConnectorTypeMapService } from '../typemap/typemap.service';
+import { IServiceRequestQuery } from '../service';
 
 export interface IConnectorConfigService {
     getConnectorConfig(connectorSetting: IConnectorSetting): Promise<IConnectorConfig>;
@@ -16,12 +17,12 @@ export class ConnectorConfigService implements IConnectorConfigService {
 
     constructor() {}    
 
-    static getMappedConfig(connectorConfig: IConnectorConfig, typeMap: ITypeMap, siteId: string, strict: boolean): IConnectorConfig {
+    static getMappedConfig(connectorConfig: IConnectorConfig, typeMap: ITypeMap, query: IServiceRequestQuery): IConnectorConfig {
         // clone - so don't update the original
         const siteConnectorConfig = JSON.parse(JSON.stringify(connectorConfig)) as IConnectorConfig;
-        this.mapDefaultValuesForSite(siteConnectorConfig.defaultValues, typeMap, strict);
-        this.mapServiceUrlsforSite(siteConnectorConfig, siteId, strict);
-        this.mapServicesForSite(siteConnectorConfig, typeMap, strict);
+        this.mapDefaultValuesForSite(siteConnectorConfig.defaultValues, typeMap, query.strict);
+        this.mapServiceUrlsforSite(siteConnectorConfig, query);
+        this.mapServicesForSite(siteConnectorConfig, typeMap, query.strict);
 
         return siteConnectorConfig;
     }
@@ -39,18 +40,22 @@ export class ConnectorConfigService implements IConnectorConfigService {
     }
 
 
-    private static mapServiceUrlsforSite(siteConnectorConfig: IConnectorConfig, siteId: string, strict: boolean): void {
-        // update all urls to append the site id
+    private static mapServiceUrlsforSite(siteConnectorConfig: IConnectorConfig, query: IServiceRequestQuery): void {
+        // update all urls to append the necessary query input to all subsequent calls
+        let queryString = `?${DEFAULT_QUERY_SITE_ID}=${encodeURIComponent(query.siteid)}`;
+        queryString += query.strict ? `&${DEFAULT_QUERY_STRICT}=${query.strict}` : '';
+        queryString += query.version ? `&${DEFAULT_QUERY_VERSION}=${encodeURIComponent(query.version)}` : '';
+
         siteConnectorConfig.schemaUrl = siteConnectorConfig.schemaUrl
-            ? `${siteConnectorConfig.schemaUrl}?${DEFAULT_QUERY_SITE_ID}=${siteId}&${DEFAULT_QUERY_STRICT}=${strict}`
+            ? `${siteConnectorConfig.schemaUrl}${queryString}`
             : undefined;
         siteConnectorConfig.chartingSchemesUrl = siteConnectorConfig.chartingSchemesUrl
-            ? `${siteConnectorConfig.chartingSchemesUrl}?${DEFAULT_QUERY_SITE_ID}=${siteId}&${DEFAULT_QUERY_STRICT}=${strict}`
+            ? `${siteConnectorConfig.chartingSchemesUrl}${queryString}`
             : undefined;
         for (const service of siteConnectorConfig.services) {
-            service.acquireUrl = `${service.acquireUrl}?${DEFAULT_QUERY_SITE_ID}=${siteId}&${DEFAULT_QUERY_STRICT}=${strict}`;
+            service.acquireUrl = `${service.acquireUrl}${queryString}`;
             service.validateUrl = service.validateUrl
-                ? `${service.validateUrl}?${DEFAULT_QUERY_SITE_ID}=${siteId}&${DEFAULT_QUERY_STRICT}=${strict}`
+                ? `${service.validateUrl}${queryString}`
                 : undefined;
         }
     }

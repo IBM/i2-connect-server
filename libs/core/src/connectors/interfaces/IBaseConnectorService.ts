@@ -2,7 +2,7 @@ import { IConnectorManifest } from "../../manifest/marshalers/ConnectorManifestM
 import { IConnectorConfigDto } from "../../config/dto/ConnectorConfigDto";
 import { ISettingsItemData } from "../../util/settings";
 import { ITypeMap } from "../../typemap/marshalers/TypeMapMarshaler";
-import { IReloadCacheResponseDto } from "@app/core/service";
+import { IReloadCacheResponseDto, IServiceRequestQuery } from "@app/core/service";
 
 export interface IBaseConnectorService {
 
@@ -10,9 +10,9 @@ export interface IBaseConnectorService {
     readonly connectorName: string;
 
     initializeAsync(connectorManifest: IConnectorManifest): Promise<void>;
-    getConnectorConfigAsDto(siteId: string, strict: boolean): IConnectorConfigDto;
-    getConnectorSchemaAsDto(siteId: string, strict: boolean): string;
-    getConnectorChartingSchemesAsDto(siteId: string, strict: boolean): string;
+    getConnectorConfigAsDto(requestQuery: IServiceRequestQuery): IConnectorConfigDto;
+    getConnectorSchemaAsDto(requestQuery: IServiceRequestQuery): string;
+    getConnectorChartingSchemesAsDto(requestQuery: IServiceRequestQuery): string;
 
     getTypeMap(siteId: string): ITypeMap;
     getTransform(id: string): string;

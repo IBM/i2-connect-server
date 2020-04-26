@@ -35,7 +35,7 @@ export abstract class BaseConnectorController
         @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery
     ): Promise<IConnectorConfigDto> {
         this.logRequest('Get config', sourceIp, null, query, this.baseConnectorService.connectorName);
-        return this.baseConnectorService.getConnectorConfigAsDto(query.siteid, query.strict);
+        return this.baseConnectorService.getConnectorConfigAsDto(query);
     }
 
     /**
@@ -48,7 +48,7 @@ export abstract class BaseConnectorController
         @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery
     ): Promise<string> {
         this.logRequest('Get schema', sourceIp, null, query, this.baseConnectorService.connectorName);
-        return this.baseConnectorService.getConnectorSchemaAsDto(query.siteid, query.strict);
+        return this.baseConnectorService.getConnectorSchemaAsDto(query);
     }
 
     /**
@@ -61,7 +61,7 @@ export abstract class BaseConnectorController
         @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery
     ): Promise<string> {
         this.logRequest('Get charting schemes', sourceIp, null, query, this.baseConnectorService.connectorName);
-        return this.baseConnectorService.getConnectorChartingSchemesAsDto(query.siteid, query.strict);
+        return this.baseConnectorService.getConnectorChartingSchemesAsDto(query);
     }
 
     @Post(`:${DEFAULT_PARAM_SERVICE}/:${DEFAULT_PARAM_METHOD}`)

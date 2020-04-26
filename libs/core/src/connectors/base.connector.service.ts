@@ -17,7 +17,7 @@ import { IConnectorTransformItem } from '../transforms/interfaces/ITransformItem
 import { ConnectorTransformService } from '../transforms/transform.service';
 import { UtilSettings, ISettingsItemData } from '../util/settings';
 import { ConnectorEnvironmentService } from '../settings/connector/connector.env.service';
-import { IReloadCacheResponseDto } from '../service';
+import { IReloadCacheResponseDto, IServiceRequestQuery } from '../service';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class BaseConnectorService implements IBaseConnectorService {
@@ -54,13 +54,13 @@ export class BaseConnectorService implements IBaseConnectorService {
         return this._connectorManifest.name;
     }
 
-    public getConnectorConfigAsDto(siteId: string, strict: boolean): IConnectorConfigDto {
-        siteId = siteId || DEFAULT_SITE_ID;
+    public getConnectorConfigAsDto(query: IServiceRequestQuery): IConnectorConfigDto {
+        query.siteid = query.siteid || DEFAULT_SITE_ID;
         if (this._connectorConfig) {
             try {
                 // modify the connector config for the specific site (updating associated type ids and urls)
-                const typeMap = this.getTypeMap(siteId);
-                const siteSpecificConfig = ConnectorConfigService.getMappedConfig(this._connectorConfig, typeMap, siteId, strict);
+                const typeMap = this.getTypeMap(query.siteid);
+                const siteSpecificConfig = ConnectorConfigService.getMappedConfig(this._connectorConfig, typeMap, query);
                 return ConnectorConfigService.getConnectorConfigAsDto(siteSpecificConfig);
             } catch (err) {
                 throw Error(`Problem returning config for connector '${this._connectorId}'. ${err.message}`)
@@ -70,10 +70,10 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }
 
-    public getConnectorSchemaAsDto(siteId: string): string {
-        siteId = siteId || DEFAULT_SITE_ID;
+    public getConnectorSchemaAsDto(query: IServiceRequestQuery): string {
+        query.siteid = query.siteid || DEFAULT_SITE_ID;
         // find the correct schema
-        const schemaItem = ConnectorSchemaService.findConnectorSchemaItem(this._connectorSchemaItems, siteId);
+        const schemaItem = ConnectorSchemaService.findConnectorSchemaItem(this._connectorSchemaItems, query.siteid);
         if (schemaItem) {
             try {
                 return ConnectorSchemaService.getConnectorSchemaAsDto(schemaItem);
@@ -81,14 +81,14 @@ export class BaseConnectorService implements IBaseConnectorService {
                 throw Error(`Problem returning schema for connector '${this._connectorId}'. ${err.message}`)
             }
         } else {
-            throw Error(`Connector '${this._connectorId}' does not have a schema defined for site id '${siteId}'.`)
+            throw Error(`Connector '${this._connectorId}' does not have a schema defined for site id '${query.siteid}'.`)
         }
     }
 
-    public getConnectorChartingSchemesAsDto(siteId: string): string {
-        siteId = siteId || DEFAULT_SITE_ID;
+    public getConnectorChartingSchemesAsDto(query: IServiceRequestQuery): string {
+        query.siteid = query.siteid || DEFAULT_SITE_ID;
         // find the correct charting scheme
-        const chartingSchemesItem = ConnectorChartingSchemesService.findConnectorChartingSchemesItem(this._connectorChartingSchemesItems, siteId);
+        const chartingSchemesItem = ConnectorChartingSchemesService.findConnectorChartingSchemesItem(this._connectorChartingSchemesItems, query.siteid);
         if (chartingSchemesItem) {
             try {
                 return ConnectorChartingSchemesService.getConnectorChartingSchemesAsDto(chartingSchemesItem);
@@ -96,7 +96,7 @@ export class BaseConnectorService implements IBaseConnectorService {
                 throw Error(`Problem returning charting schemes for connector '${this._connectorId}'. ${err.message}`)
             }
         } else {
-            throw Error(`Connector '${this._connectorId}' does not have charting schemes defined for site id '${siteId}'.`)
+            throw Error(`Connector '${this._connectorId}' does not have charting schemes defined for site id '${query.siteid}'.`)
         }
     }
 

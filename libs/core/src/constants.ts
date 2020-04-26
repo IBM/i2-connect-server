@@ -30,5 +30,6 @@ export const DEFAULT_URL_PATH_RELOAD = "reload";
 export const DEFAULT_SITE_ID = "default";
 export const DEFAULT_QUERY_SITE_ID = "siteid";
 export const DEFAULT_QUERY_STRICT = "strict";
+export const DEFAULT_QUERY_VERSION = "version";
 export const DEFAULT_PARAM_SERVICE = "serviceName";
 export const DEFAULT_PARAM_METHOD = "methodType";
