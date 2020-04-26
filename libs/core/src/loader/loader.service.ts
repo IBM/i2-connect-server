@@ -26,7 +26,8 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
     private _modulesArray: IConnectorModule[] = [];
 
     public async initializeAsync(connectorManifestsPath: string): Promise<void> {
-        this._manifests = await Promise.all(this.createManifestServices(connectorManifestsPath));
+        const fullManifestsPath = path.normalize(path.join(process.cwd(), connectorManifestsPath))
+        this._manifests = await Promise.all(this.createManifestServices(fullManifestsPath));
     }
 
     public createConnectorProviders(): Provider[] {
@@ -36,9 +37,17 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
     }
 
     public async createConnectorModules(): Promise<DynamicModule[]> {
-        const filePaths = this._manifests.map(item => {
-            return path.normalize(path.join(process.cwd(), item.moduleFilePath));
-        });
+        const filePaths = this._manifests.reduce((availableFilePaths, item) => {
+            if (item.moduleFilePath) {
+                const fullPath = path.normalize(path.join(process.cwd(), item.moduleFilePath));
+                availableFilePaths.push(fullPath);
+            } else {
+                // do not throw an error but log and continue
+                Logger.error(`Error loading module for connector '${item.name}'. moduleFilePath not defined in connector manifest. Skipping.`)
+            }
+            return availableFilePaths;
+        }, []);  
+
         return this.loadConnectorModulesFromFiles(filePaths);
     }
 

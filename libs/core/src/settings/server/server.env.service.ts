@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Joi = require('@hapi/joi');
-import { NODE_ENV, ENV_SERVER_PORT, DEFAULT_SERVER_PORT, ENV_CONNECTORS_HOME } from '../../constants';
+import { NODE_ENV, ENV_SERVER_PORT, DEFAULT_SERVER_PORT, ENV_CONNECTORS_HOME, DEFAULT_CONNECTORS_HOME } from '../../constants';
 
 @Injectable()
 export class ServerEnvironmentService {
@@ -17,7 +17,7 @@ export class ServerEnvironmentService {
         validatorDef[ENV_SERVER_PORT] = Joi.number()
             .default(DEFAULT_SERVER_PORT);
         validatorDef[ENV_CONNECTORS_HOME] = Joi.string()
-            .default('connectors');
+            .default(DEFAULT_CONNECTORS_HOME);
 
         return Joi.object(validatorDef);
     }

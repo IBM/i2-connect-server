@@ -3,13 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServerEnvironmentModule } from '@app/core/settings';
 import { LoadersModule } from '@app/core/loader';
-import { ExampleConnectorModule } from 'libs/connectors/example';
 
 @Module({
     imports: [
-        ExampleConnectorModule,
+        // ExampleConnectorModule,
         ServerEnvironmentModule,
-        LoadersModule.registerAsync()
+        LoadersModule.registerAsync('libs/connectors')
     ],
     controllers: [
         AppController

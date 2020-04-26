@@ -4,14 +4,12 @@ export const NODE_ENV: string = "NODE_ENV";
 export const ENV_SERVER_PORT: string = "SERVER_PORT";
 export const ENV_SSL_ENABLED: string = "SSL_ENABLED";
 export const ENV_SSL_PORT: string = "SSL_PORT";
+export const ENV_CONNECTORS_HOME = 'CONNECTORS_HOME'
 
 export const DEFAULT_SERVER_PORT: number = 3000;
+export const DEFAULT_CONNECTORS_HOME: string = 'libs/connectors';
 
 export const ENV_CONN_LOGPAYLOADS: string = "CONN_LOGPAYLOADS";
-
-export const ENV_CONNECTORS_HOME = 'CONNECTORS_HOME'
-// TODO: remove this static path (once figured out a way to inject into the loader service)
-export const CONNECTORS_HOME = path.normalize(path.join(process.cwd(), 'libs/connectors'));
 
 export const SETTING_CONN_CONFIG: string = "i2.config";
 export const SETTING_CONN_SCHEMAS: string = "i2.schemas";

@@ -19,6 +19,7 @@ export class ExampleConnectorService implements OnModuleInit {
     constructor(@Connector(CONNECTOR_ID) private baseConnectorService: IBaseConnectorService) {}    
     
     async onModuleInit() {
+        Logger.debug('Initializing example connector.', 'ExampleConnector')
         try {
             const dataSettingsResult = await this.baseConnectorService.getSettingValueAsync(SETTING_NAME_PERSONDATAFILE);
             const personData = JSON.parse(dataSettingsResult.data);
