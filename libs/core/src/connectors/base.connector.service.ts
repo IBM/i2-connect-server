@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject, Scope } from '@nestjs/common';
+import { Injectable, Logger, Scope } from '@nestjs/common';
 import { ConnectorConfigService } from '../config/config.service';
 import { IConnectorConfig } from '../config/marshalers/ConnectorConfigMarshaler';
 import { IConnectorConfigDto } from '../config/dto/ConnectorConfigDto';
@@ -141,7 +141,7 @@ export class BaseConnectorService implements IBaseConnectorService {
     }
 
     public getSettingLogPayloads(): boolean {
-        return this._connSettings.logPayloads();
+        return this._connSettings.logPayloads;
     }
 
     public async reloadCachesAsync(): Promise<IReloadCacheResponseDto> {

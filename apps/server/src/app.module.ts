@@ -6,9 +6,8 @@ import { LoadersModule } from '@app/core/loader';
 
 @Module({
     imports: [
-        // ExampleConnectorModule,
         ServerEnvironmentModule,
-        LoadersModule.registerAsync('libs/connectors')
+        LoadersModule.registerAsync()
     ],
     controllers: [
         AppController
