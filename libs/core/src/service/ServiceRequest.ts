@@ -3,10 +3,12 @@ import { FormConditionLogicalTypeEnum } from "../config/marshalers/ConnectorConf
 import { ITypeMap } from "../typemap/marshalers/TypeMapMarshaler";
 import { ConnectorTypeMapService, PropertyMappingIdTypeEnum } from "../typemap/typemap.service";
 import { IServiceRequestQuery } from "./marshalers/ServiceRequestQueryMarshaler";
+import { IServiceRequestParams } from "./marshalers/ServiceRequestParamsMarshaler";
 
 export interface IConnectorServiceRequest {
 
-    readonly requestQuery: IServiceRequestQuery;
+    readonly query: IServiceRequestQuery;
+    readonly params: IServiceRequestParams;
     readonly mappedPayload: IDaodRequestPayload;
     getConditionValue<T extends string | boolean | number>(conditionId: string): T;
     extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[]): Set<string>
@@ -17,11 +19,16 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
 
     private constructor(
         private _requestQuery: IServiceRequestQuery,
+        private _requestParams: IServiceRequestParams,
         private _mappedPayload: IDaodRequestPayload
     ) {}
 
-    public get requestQuery(): IServiceRequestQuery {
+    public get query(): IServiceRequestQuery {
         return this._requestQuery;
+    }
+
+    public get params(): IServiceRequestParams {
+        return this._requestParams;
     }
 
     public get mappedPayload(): IDaodRequestPayload {
@@ -31,10 +38,11 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
     public static createConnectorServiceRequest(
         daodRequest: IDaodRequest, 
         requestQuery: IServiceRequestQuery,
-        typeMap: ITypeMap
+        requestParams: IServiceRequestParams,
+        typeMap: ITypeMap,
     ) : IConnectorServiceRequest {
         const mappedDaodRequest = this.getMappedRequest(daodRequest, typeMap, requestQuery.strict);
-        return new ConnectorServiceRequest(requestQuery, mappedDaodRequest.payload);
+        return new ConnectorServiceRequest(requestQuery, requestParams, mappedDaodRequest.payload);
     }    
 
     private static getMappedRequest(request: IDaodRequest, typeMap: ITypeMap, strict: boolean): IDaodRequest {

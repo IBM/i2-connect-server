@@ -74,9 +74,9 @@ export abstract class BaseConnectorController
     ): Promise<IDaodResultsDto | IDaodValidationResponse> {
         this.logRequest(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`, 
                         sourceIp, request, query, this.baseConnectorService.connectorName);
-        const serviceRequest = this.createConnectorServiceRequest(request, query);
+        const serviceRequest = this.createConnectorServiceRequest(request, query, params);
         const startTime = Date.now();
-        const result = await this.executeRequest(params, serviceRequest);
+        const result = await this.executeRequest(serviceRequest);
         const endTime = Date.now();
         this.logResponse(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`,
                          sourceIp, request, this.baseConnectorService.connectorName, startTime, endTime);
@@ -95,10 +95,11 @@ export abstract class BaseConnectorController
 
     public createConnectorServiceRequest(
         daodRequest: IDaodRequest,
-        requestQuery: IServiceRequestQuery
+        requestQuery: IServiceRequestQuery,
+        requestParams: IServiceRequestParams
     ) : IConnectorServiceRequest {
         const typeMap = this.baseConnectorService.getTypeMap(requestQuery.siteid);
-        return ConnectorServiceRequest.createConnectorServiceRequest(daodRequest, requestQuery, typeMap);
+        return ConnectorServiceRequest.createConnectorServiceRequest(daodRequest, requestQuery, requestParams, typeMap);
     }
 
     public createConnectorServiceAquireResponse(
@@ -132,28 +133,25 @@ export abstract class BaseConnectorController
     }
 
     private async executeRequest<T>(
-        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResultsDto | IDaodValidationResponseDto> {
-        switch (requestParams.methodType) {
+        switch (serviceRequest.params.methodType) {
             case IServiceRequestMethodTypeEnum.ACQUIRE:
-                const daodResults = await this.executeAquireRequest(requestParams, serviceRequest);
-                return this.createConnectorServiceAquireResponse(daodResults, serviceRequest.requestQuery).mappedResultsDto;
+                const daodResults = await this.executeAquireRequest(serviceRequest);
+                return this.createConnectorServiceAquireResponse(daodResults, serviceRequest.query).mappedResultsDto;
             case IServiceRequestMethodTypeEnum.VALIDATE:
-                const validateResponse = await this.executeValidateRequest(requestParams, serviceRequest);
-                return this.createConnectorServiceValidateResponse(validateResponse, serviceRequest.requestQuery).validationResponseDto;
+                const validateResponse = await this.executeValidateRequest(serviceRequest);
+                return this.createConnectorServiceValidateResponse(validateResponse, serviceRequest.query).validationResponseDto;
             default:
                 throw Error('Unknown or invalid method type when executing service request.');
         }
     }
 
     abstract async executeAquireRequest(
-        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResults>;
 
     abstract async executeValidateRequest(
-        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodValidationResponse>;
 
