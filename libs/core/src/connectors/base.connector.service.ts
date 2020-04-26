@@ -17,6 +17,7 @@ import { IConnectorTransformItem } from '../transforms/interfaces/ITransformItem
 import { ConnectorTransformService } from '../transforms/transform.service';
 import { UtilSettings, ISettingsItemData } from '../util/settings';
 import { ConnectorEnvironmentService } from '../settings/connector/connector.env.service';
+import { IReloadCacheResponseDto } from '../service';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class BaseConnectorService implements IBaseConnectorService {
@@ -42,11 +43,7 @@ export class BaseConnectorService implements IBaseConnectorService {
         this._connectorManifest = connectorManifest;
         this._connectorId = connectorManifest.id;
 
-        await this.initializeAsyncConnectorConfig();
-        await this.initializeAsyncConnectorSchemaItems();
-        await this.initializeAsyncConnectorChartingSchemesItems();
-        await this.initializeAsyncConnectorTypeMapItems();
-        await this.initializeAsyncConnectorTransformItems();
+        await this.loadConnectorCachesAsync();
     }
     
     public get connectorId() {
@@ -147,8 +144,24 @@ export class BaseConnectorService implements IBaseConnectorService {
         return this._connSettings.logPayloads();
     }
 
-    private async initializeAsyncConnectorConfig() {
+    public async reloadCachesAsync(): Promise<IReloadCacheResponseDto> {
+        await this.loadConnectorCachesAsync();
+        return {
+            message: 'Connector caches reloaded successfully.'
+        }
+    }
+
+    private async loadConnectorCachesAsync(): Promise<void> {
+        await this.loadConnectorConfigAsync();
+        await this.loadConnectorSchemaItemsAsync();
+        await this.loadConnectorChartingSchemesItemsAsync();
+        await this.loadConnectorTypeMapItemsAsync();
+        await this.loadConnectorTransformItemsAsync();
+    }
+
+    private async loadConnectorConfigAsync(): Promise<void> {
         try {
+            this._connectorConfig = null; // clear existing cache
             const configSetting = ConnectorManifestService.getConnectorConfigSetting(this._connectorManifest, true);
             this._connectorConfig = await this._configService.getConnectorConfig(configSetting);
         } catch (err) {
@@ -156,8 +169,9 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }
 
-    private async initializeAsyncConnectorSchemaItems() {
+    private async loadConnectorSchemaItemsAsync(): Promise<void> {
         try {
+            this._connectorSchemaItems = null; // clear existing cache
             const schemasSetting = ConnectorManifestService.getConnectorSchemasSetting(this._connectorManifest, false);
             if (schemasSetting) {
                 this._connectorSchemaItems = await this._schemaService.getConnectorSchemaItems(schemasSetting);
@@ -167,8 +181,9 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }
 
-    private async initializeAsyncConnectorChartingSchemesItems() {
+    private async loadConnectorChartingSchemesItemsAsync(): Promise<void> {
         try {
+            this._connectorChartingSchemesItems = null; // clear existing cache
             const chartingSchemesSetting = ConnectorManifestService.getConnectorChartingSchemesSetting(this._connectorManifest, false);
             if (chartingSchemesSetting) {
                 this._connectorChartingSchemesItems = await this._chartingSchemesService.getConnectorChartingSchemesItems(chartingSchemesSetting);
@@ -178,8 +193,9 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }    
 
-    private async initializeAsyncConnectorTypeMapItems() {
+    private async loadConnectorTypeMapItemsAsync(): Promise<void> {
         try {
+            this._connectorTypeMapItems = null; // clear existing cache
             const typeMapsSetting = ConnectorManifestService.getConnectorTypeMapsSetting(this._connectorManifest, false);
             if (typeMapsSetting) {
                 this._connectorTypeMapItems = await this._typeMapService.getConnectorTypeMapItems(typeMapsSetting);
@@ -189,8 +205,9 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }   
 
-    private async initializeAsyncConnectorTransformItems() {
+    private async loadConnectorTransformItemsAsync(): Promise<void> {
         try {
+            this._connectorTransformItems = null; // clear existing cache
             const transformsSetting = ConnectorManifestService.getConnectorTransformsSetting(this._connectorManifest, false);
             if (transformsSetting) {
                 this._connectorTransformItems = await this._transformService.getConnectorTransformItems(transformsSetting);

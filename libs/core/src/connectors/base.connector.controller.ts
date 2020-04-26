@@ -1,7 +1,7 @@
 import { Get, Header, Logger, Ip, Query, Post, HttpCode, Body, Param } from '@nestjs/common';
 import { IConnectorConfigDto } from '../config/dto/ConnectorConfigDto';
 import { IBaseConnectorService } from './interfaces/IBaseConnectorService';
-import { DEFAULT_URL_PATH_CONFIG, DEFAULT_URL_PATH_SCHEMA, DEFAULT_URL_PATH_CHARTINGSCHEMES, DEFAULT_PARAM_SERVICE, DEFAULT_PARAM_METHOD } from '../constants';
+import { DEFAULT_URL_PATH_CONFIG, DEFAULT_URL_PATH_SCHEMA, DEFAULT_URL_PATH_CHARTINGSCHEMES, DEFAULT_PARAM_SERVICE, DEFAULT_PARAM_METHOD, DEFAULT_URL_PATH_RELOAD } from '../constants';
 import { IConnectorServiceRequestFactory } from '../service/interfaces/IServiceRequestFactory';
 import { IDaodRequest } from '../service/marshalers/DaodRequestMarshaler';
 import { IConnectorServiceResponseFactory } from '../service/interfaces/IServiceResponseFactory';
@@ -17,6 +17,7 @@ import { ServiceRequestBodyPipe } from '../service/pipes/ServiceRequestBody.pipe
 import { IServiceRequestParam, IServiceRequestMethodTypeEnum } from '../service/marshalers/ServiceRequestParamMarshaler';
 import { IDaodResultsDto } from '../service/dto/IDaodResultsDto';
 import { IDaodValidationResponseDto } from '../service/dto/IDaodValidationResponseDto';
+import { IReloadCacheResponseDto } from '../service';
 
 export abstract class BaseConnectorController
         implements IConnectorServiceRequestFactory, IConnectorServiceResponseFactory {
@@ -80,6 +81,16 @@ export abstract class BaseConnectorController
         this.logResponse(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`,
                          sourceIp, request, this.baseConnectorService.connectorName, startTime, endTime);
         return result;
+    }
+
+    @Post(`${DEFAULT_URL_PATH_RELOAD}`)
+    @HttpCode(200)
+    async reloadCache(
+        @Ip() sourceIp: string,
+        @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery
+    ): Promise<IReloadCacheResponseDto> {
+        this.logRequest(`Reload cache`, sourceIp, null, query, this.baseConnectorService.connectorName);
+        return await this.baseConnectorService.reloadCachesAsync();
     }
 
     public createConnectorServiceRequest(

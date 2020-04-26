@@ -25,6 +25,7 @@ export const DEFAULT_URL_PATH_SCHEMA = "schema";
 export const DEFAULT_URL_PATH_CHARTINGSCHEMES = "chartingschemes";
 export const DEFAULT_URL_PATH_ACQUIRE = "acquire";
 export const DEFAULT_URL_PATH_VALIDATE = "validate";
+export const DEFAULT_URL_PATH_RELOAD = "reload";
 
 export const DEFAULT_SITE_ID = "default";
 export const DEFAULT_QUERY_SITE_ID = "siteid";
