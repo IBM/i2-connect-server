@@ -7,13 +7,7 @@ import { IConnectorServiceRequest, IDaodResults, IDaodValidationResponse } from 
 
 // the connector service itself
 import { ExampleConnectorService } from './example.connector.service';
-import { CONNECTOR_ID, CONTEXT_ROOT,
-         SERVICE_NAME_EXAMPLESEARCH,
-         SERVICE_NAME_EXAMPLESCHEMAEXTENSION, 
-         SERVICE_NAME_EXAMPLESEEDEDSEARCH1, 
-         SERVICE_NAME_EXAMPLESEEDEDSEARCH2, 
-         SERVICE_NAME_EXAMPLESEEDEDSEARCH3, 
-         SERVICE_NAME_EXAMPLESEEDEDSEARCH4 } from './constants';
+import { CONNECTOR_ID, CONTEXT_ROOT, SERVICE_NAMES } from './constants';
 
 @Controller(CONTEXT_ROOT)
 export class ExampleConnectorController extends BaseConnectorController {
@@ -23,32 +17,30 @@ export class ExampleConnectorController extends BaseConnectorController {
         super();
     }
 
-    async executeAquireRequest(
-        request: IConnectorServiceRequest
-    ): Promise<IDaodResults> {
-        switch (request.params.serviceName) {
-            case SERVICE_NAME_EXAMPLESEARCH:
+    async executeAquireRequest(request: IConnectorServiceRequest): Promise<IDaodResults> {
+        const serviceName = SERVICE_NAMES[request.params.serviceName];
+        switch (serviceName) {
+            case SERVICE_NAMES.exampleSearch:
                 return await this.connectorService.exampleSearchAquire(request);
-            case SERVICE_NAME_EXAMPLESEEDEDSEARCH1:
+            case SERVICE_NAMES.exampleSeededSearch1:
                 return await this.connectorService.exampleSeededSearch1Aquire(request);
-            case SERVICE_NAME_EXAMPLESEEDEDSEARCH2:
+            case SERVICE_NAMES.exampleSeededSearch2:
                 return await this.connectorService.exampleSeededSearch2Aquire(request);
-            case SERVICE_NAME_EXAMPLESEEDEDSEARCH3:
+            case SERVICE_NAMES.exampleSeededSearch3:
                 return await this.connectorService.exampleSeededSearch3Aquire(request);
-            case SERVICE_NAME_EXAMPLESEEDEDSEARCH4:
+            case SERVICE_NAMES.exampleSeededSearch4:
                 return await this.connectorService.exampleSeededSearch4Aquire(request);
-            case SERVICE_NAME_EXAMPLESCHEMAEXTENSION:
+            case SERVICE_NAMES.exampleSchemaExtension:
                 return await this.connectorService.exampleSchemaExtensionAquire(request);
             default:
                 throw new NotImplementedException();
         } 
     }
 
-    async executeValidateRequest(
-        request: IConnectorServiceRequest
-    ): Promise<IDaodValidationResponse> {
-        switch (request.params.serviceName) {
-            case SERVICE_NAME_EXAMPLESEARCH:
+    async executeValidateRequest(request: IConnectorServiceRequest): Promise<IDaodValidationResponse> {
+        const serviceName = SERVICE_NAMES[request.params.serviceName];
+        switch (serviceName) {
+            case SERVICE_NAMES.exampleSearch:
                 return await this.connectorService.exampleSearchValidate(request);
             default:
                 throw new NotImplementedException();

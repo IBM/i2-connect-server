@@ -6,9 +6,11 @@ export const SETTING_NAME_PERSONDATAFILE = "person.data.file";
 
 export const TRANSFORM_NAME_PERSON = "person"
 
-export const SERVICE_NAME_EXAMPLESEARCH = 'exampleSearch';
-export const SERVICE_NAME_EXAMPLESEEDEDSEARCH1 = 'exampleSeededSearch1';
-export const SERVICE_NAME_EXAMPLESEEDEDSEARCH2 = 'exampleSeededSearch2';
-export const SERVICE_NAME_EXAMPLESEEDEDSEARCH3 = 'exampleSeededSearch3';
-export const SERVICE_NAME_EXAMPLESEEDEDSEARCH4 = 'exampleSeededSearch4';
-export const SERVICE_NAME_EXAMPLESCHEMAEXTENSION = 'exampleSchemaExtension';
+export enum SERVICE_NAMES {
+    exampleSearch,
+    exampleSeededSearch1,
+    exampleSeededSearch2,
+    exampleSeededSearch3,
+    exampleSeededSearch4,
+    exampleSchemaExtension
+}
