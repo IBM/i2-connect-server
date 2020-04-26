@@ -3,7 +3,14 @@ import { DEFAULT_URL_PATH_ACQUIRE, DEFAULT_URL_PATH_VALIDATE } from "../../const
 
 export interface IServiceRequestParams {
 
+    /**
+     * The service name being requested - as defined by services listed in the i2 Connector configuration file
+     */
     serviceName: string;
+    
+    /**
+     * The method type of the service being requested, either an aquire (get data) or a validate (check request input).
+     */
     methodType: IServiceRequestMethodTypeEnum;
 
 }

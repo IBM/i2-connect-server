@@ -2,6 +2,9 @@ import { IReloadCacheResponseDto } from "../dto/IReloadCacheResponseDto";
 
 export class IReloadCacheResponse {
 
+    /**
+     * Message returned upon successful reload action
+     */
     message: string;
 
 }
