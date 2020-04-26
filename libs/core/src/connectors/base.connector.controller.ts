@@ -14,7 +14,7 @@ import { IServiceRequestQuery } from '../service/marshalers/ServiceRequestQueryM
 import { ServiceRequestQueryPipe } from '../service/pipes/ServiceRequestQuery.pipe';
 import { ServiceRequestParamPipe } from '../service/pipes/ServiceRequestParam.pipe';
 import { ServiceRequestBodyPipe } from '../service/pipes/ServiceRequestBody.pipe';
-import { IServiceRequestParam, IServiceRequestMethodTypeEnum } from '../service/marshalers/ServiceRequestParamMarshaler';
+import { IServiceRequestParams, IServiceRequestMethodTypeEnum } from '../service/marshalers/ServiceRequestParamsMarshaler';
 import { IDaodResultsDto } from '../service/dto/IDaodResultsDto';
 import { IDaodValidationResponseDto } from '../service/dto/IDaodValidationResponseDto';
 import { IReloadCacheResponseDto } from '../service';
@@ -70,7 +70,7 @@ export abstract class BaseConnectorController
         @Ip() sourceIp: string,
         @Body(ServiceRequestBodyPipe) request: IDaodRequest,
         @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery,
-        @Param(ServiceRequestParamPipe) params: IServiceRequestParam
+        @Param(ServiceRequestParamPipe) params: IServiceRequestParams
     ): Promise<IDaodResultsDto | IDaodValidationResponse> {
         this.logRequest(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`, 
                         sourceIp, request, query, this.baseConnectorService.connectorName);
@@ -132,7 +132,7 @@ export abstract class BaseConnectorController
     }
 
     private async executeRequest<T>(
-        requestParams: IServiceRequestParam,
+        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResultsDto | IDaodValidationResponseDto> {
         switch (requestParams.methodType) {
@@ -148,12 +148,12 @@ export abstract class BaseConnectorController
     }
 
     abstract async executeAquireRequest(
-        requestParams: IServiceRequestParam,
+        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResults>;
 
     abstract async executeValidateRequest(
-        requestParams: IServiceRequestParam,
+        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodValidationResponse>;
 

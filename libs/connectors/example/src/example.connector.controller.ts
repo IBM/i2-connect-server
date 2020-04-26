@@ -3,7 +3,7 @@ import { Controller, NotImplementedException } from '@nestjs/common';
 
 // base connector components
 import { BaseConnectorController, IBaseConnectorService, Connector } from '@app/core/connectors';
-import { IServiceRequestParam, IConnectorServiceRequest, IDaodResults, IDaodValidationResponse } from '@app/core/service';
+import { IServiceRequestParams, IConnectorServiceRequest, IDaodResults, IDaodValidationResponse } from '@app/core/service';
 
 // the connector service itself
 import { ExampleConnectorService } from './example.connector.service';
@@ -24,7 +24,7 @@ export class ExampleConnectorController extends BaseConnectorController {
     }
 
     async executeAquireRequest(
-        requestParams: IServiceRequestParam,
+        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResults> {
         switch (requestParams.serviceName) {
@@ -46,7 +46,7 @@ export class ExampleConnectorController extends BaseConnectorController {
     }
 
     async executeValidateRequest(
-        requestParams: IServiceRequestParam,
+        requestParams: IServiceRequestParams,
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodValidationResponse> {
         switch (requestParams.serviceName) {

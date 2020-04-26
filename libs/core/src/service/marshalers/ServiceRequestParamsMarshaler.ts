@@ -1,7 +1,7 @@
-import { IServiceRequestParamDto } from "../dto/IServiceRequestParamDto";
+import { IServiceRequestParamsDto } from "../dto/IServiceRequestParamsDto";
 import { DEFAULT_URL_PATH_ACQUIRE, DEFAULT_URL_PATH_VALIDATE } from "../../constants";
 
-export interface IServiceRequestParam {
+export interface IServiceRequestParams {
 
     serviceName: string;
     methodType: IServiceRequestMethodTypeEnum;
@@ -13,9 +13,9 @@ export enum IServiceRequestMethodTypeEnum {
     VALIDATE
 }
 
-export class ServiceRequestParamMarshaler {
+export class ServiceRequestParamsMarshaler {
 
-    public static marshalFromDto(dto: IServiceRequestParamDto): IServiceRequestParam {
+    public static marshalFromDto(dto: IServiceRequestParamsDto): IServiceRequestParams {
         if (!dto.serviceName) {
             throw new Error("Request route (params) has no serviceName, check the service acquire/validate url structure.");
         }
