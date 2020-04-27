@@ -43,7 +43,7 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
                 availableFilePaths.push(fullPath);
             } else {
                 // do not throw an error but log and continue
-                Logger.error(`Error loading module for connector '${item.name}'. moduleFilePath not defined in connector manifest. Skipping.`)
+                Logger.warn(`Error loading module for connector '${item.name}'. moduleFilePath not defined in connector manifest. Skipping.`)
             }
             return availableFilePaths;
         }, []);  
