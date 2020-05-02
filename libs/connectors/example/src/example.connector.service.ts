@@ -33,6 +33,10 @@ export class ExampleConnectorService implements OnModuleInit {
 
     async exampleSearchAquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
 
+        // Retrieve a header value and output to log
+        const userAgent = serviceRequest.getHeader('user-agent');
+        Logger.log(`Request from user-agent '${userAgent}'.`, 'ExampleConnector');
+
         // Pull out the search term using the identifier defined in the client configuration
         const term = serviceRequest.getConditionValue<string>("term");
 

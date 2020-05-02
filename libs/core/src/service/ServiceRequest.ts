@@ -4,12 +4,15 @@ import { ITypeMap } from "../typemap/marshalers/TypeMapMarshaler";
 import { ConnectorTypeMapService, PropertyMappingIdTypeEnum } from "../typemap/typemap.service";
 import { IServiceRequestQuery } from "./marshalers/ServiceRequestQueryMarshaler";
 import { IServiceRequestParams } from "./marshalers/ServiceRequestParamsMarshaler";
+import { IServiceRequestHeaders } from "./marshalers/ServiceRequestHeadersMarshaler";
 
 export interface IConnectorServiceRequest {
 
     readonly query: IServiceRequestQuery;
     readonly params: IServiceRequestParams;
     readonly mappedPayload: IDaodRequestPayload;
+
+    getHeader(key: string): string;
     getConditionValue<T extends string | boolean | number>(conditionId: string): T;
     extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[]): Set<string>
     
@@ -20,6 +23,7 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
     private constructor(
         private _requestQuery: IServiceRequestQuery,
         private _requestParams: IServiceRequestParams,
+        private _requestHeaders: IServiceRequestHeaders,
         private _mappedPayload: IDaodRequestPayload
     ) {}
 
@@ -31,6 +35,10 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
         return this._requestParams;
     }
 
+    public get headers(): IServiceRequestHeaders {
+        return this._requestHeaders;
+    }
+
     public get mappedPayload(): IDaodRequestPayload {
         return this._mappedPayload;
     }
@@ -39,10 +47,11 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
         daodRequest: IDaodRequest, 
         requestQuery: IServiceRequestQuery,
         requestParams: IServiceRequestParams,
+        requestHeaders: IServiceRequestHeaders,
         typeMap: ITypeMap,
     ) : IConnectorServiceRequest {
         const mappedDaodRequest = this.getMappedRequest(daodRequest, typeMap, requestQuery.strict);
-        return new ConnectorServiceRequest(requestQuery, requestParams, mappedDaodRequest.payload);
+        return new ConnectorServiceRequest(requestQuery, requestParams, requestHeaders, mappedDaodRequest.payload);
     }    
 
     private static getMappedRequest(request: IDaodRequest, typeMap: ITypeMap, strict: boolean): IDaodRequest {
@@ -151,7 +160,11 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
         const externalIds = sourceIds ? sourceIds.filter(this.isI2ConnectSeed).map(s => s.key[2]) : [];
         return new Set(externalIds);
     }
-    
+
+    public getHeader(key: string): string {
+        return this._requestHeaders ? this._requestHeaders[key] : null;
+    }
+
     /**
      * Determines whether a source identifier is from the i2 Connect gateway
      * @param {IDaodOriginIdentifier} sourceId - The source identifier

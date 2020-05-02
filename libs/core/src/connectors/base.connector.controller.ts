@@ -1,4 +1,4 @@
-import { Get, Header, Logger, Ip, Query, Post, HttpCode, Body, Param } from '@nestjs/common';
+import { Get, Header, Headers, Logger, Ip, Query, Post, HttpCode, Body, Param } from '@nestjs/common';
 import { IConnectorConfigDto } from '../config/dto/ConnectorConfigDto';
 import { IBaseConnectorService } from './interfaces/IBaseConnectorService';
 import { DEFAULT_URL_PATH_CONFIG, DEFAULT_URL_PATH_SCHEMA, DEFAULT_URL_PATH_CHARTINGSCHEMES, DEFAULT_PARAM_SERVICE, DEFAULT_PARAM_METHOD, DEFAULT_URL_PATH_RELOAD } from '../constants';
@@ -18,6 +18,8 @@ import { IServiceRequestParams, IServiceRequestMethodTypeEnum } from '../service
 import { IDaodResultsDto } from '../service/dto/IDaodResultsDto';
 import { IDaodValidationResponseDto } from '../service/dto/IDaodValidationResponseDto';
 import { IReloadCacheResponseDto } from '../service';
+import { IServiceRequestHeaders, ServiceRequestHeadersMarshaler } from '../service/marshalers/ServiceRequestHeadersMarshaler';
+import { IServiceRequestHeadersDto } from '../service/dto/IServiceRequestHeadersDto';
 
 export abstract class BaseConnectorController
         implements IConnectorServiceRequestFactory, IConnectorServiceResponseFactory {
@@ -66,15 +68,17 @@ export abstract class BaseConnectorController
 
     @Post(`:${DEFAULT_PARAM_SERVICE}/:${DEFAULT_PARAM_METHOD}`)
     @HttpCode(200)
-    async exampleSearchAquire(
+    async serviceRequest(
         @Ip() sourceIp: string,
         @Body(ServiceRequestBodyPipe) request: IDaodRequest,
         @Query(ServiceRequestQueryPipe) query: IServiceRequestQuery,
-        @Param(ServiceRequestParamPipe) params: IServiceRequestParams
+        @Param(ServiceRequestParamPipe) params: IServiceRequestParams,
+        @Headers() headersDto: IServiceRequestHeadersDto
     ): Promise<IDaodResultsDto | IDaodValidationResponse> {
         this.logRequest(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`, 
                         sourceIp, request, query, this.baseConnectorService.connectorName);
-        const serviceRequest = this.createConnectorServiceRequest(request, query, params);
+        const headers = ServiceRequestHeadersMarshaler.marshalFromDto(headersDto);
+        const serviceRequest = this.createConnectorServiceRequest(request, query, params, headers);
         const startTime = Date.now();
         const result = await this.executeRequest(serviceRequest);
         const endTime = Date.now();
@@ -96,10 +100,12 @@ export abstract class BaseConnectorController
     public createConnectorServiceRequest(
         daodRequest: IDaodRequest,
         requestQuery: IServiceRequestQuery,
-        requestParams: IServiceRequestParams
+        requestParams: IServiceRequestParams,
+        requestHeaders: IServiceRequestHeaders
     ) : IConnectorServiceRequest {
         const typeMap = this.baseConnectorService.getTypeMap(requestQuery.siteid);
-        return ConnectorServiceRequest.createConnectorServiceRequest(daodRequest, requestQuery, requestParams, typeMap);
+        return ConnectorServiceRequest.createConnectorServiceRequest(daodRequest, requestQuery, 
+                                                                     requestParams, requestHeaders, typeMap);
     }
 
     public createConnectorServiceAquireResponse(
