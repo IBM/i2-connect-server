@@ -2,58 +2,21 @@
 
 export interface IConnectorManifestDto {
 
-    /**
-     * Connector id
-     */
     id: string;
-
-    /**
-     * Connector version
-     */
     version: string;
-
-    /**
-     * Connector name
-     */
     name: string;
-
-    /**
-     * Connector description
-     */
     description: string;
-
-    /**
-     * Connector author
-     */
+    autoLoad?: boolean;
     author: string;
-
-    /**
-     * Connector author
-     */
-    moduleFilePath: string;
-
-    /**
-     * Connector settings
-     */
+    moduleFilePath?: string;
     settings: IConnectorSettingDto[];
 
 }
 
 export interface IConnectorSettingDto {
 
-    /**
-     * Unique key for the setting
-     */
     id: string;
-
-    /**
-     * Value of the setting (string, number or boolean)
-     */
     value?: string | number | boolean;
-
-    /**
-     * Type of the setting (FILE, URL, LITERAL)
-     */
     type: string;
 
 }

@@ -23,6 +23,11 @@ export interface IConnectorManifest {
     description: string;
 
     /**
+     * Whether to automatically load the connector on server startup
+     */
+    autoLoad?: boolean;
+
+    /**
      * Connector author
      */
     author: string;
@@ -30,7 +35,7 @@ export interface IConnectorManifest {
     /**
      * Connector author
      */
-    moduleFilePath: string;
+    moduleFilePath?: string;
 
     /**
      * Connector settings
@@ -60,6 +65,10 @@ export interface IConnectorSetting {
 
 export interface IConnectorFolderSetting extends IConnectorSetting {
 
+    /**
+     * File extension filter applied when searching for files within the given folder.  Must
+     * be an extact match, can not contain any wildcards or regex.
+     */
     extensionFilter: string;
 
 }
@@ -90,11 +99,6 @@ export class ConnectorSettingsMarshaler {
         if (!dto.author) {
             throw new Error("Connector settings has no author property defined.");
         }
-        /*
-        if (!dto.moduleFilePath) {
-            throw new Error("Connector settings has no moduleFilePath property defined.");
-        }
-        */
         if (!dto.settings) {
             throw new Error("Connector settings has no settings property defined.");
         }
@@ -104,6 +108,7 @@ export class ConnectorSettingsMarshaler {
             name: dto.name,
             description: dto.description,
             author: dto.author,
+            autoLoad: dto.autoLoad,
             moduleFilePath: dto.moduleFilePath,
             settings: dto.settings.map((s) => ConnectorSettingMarshaler.marshalFromDto(s)),
         };

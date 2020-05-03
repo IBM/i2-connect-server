@@ -27,23 +27,34 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
 
     public async initializeAsync(connectorManifestsPath: string): Promise<void> {
         const fullManifestsPath = path.normalize(path.join(process.cwd(), connectorManifestsPath))
-        this._manifests = await Promise.all(this.createManifestServices(fullManifestsPath));
+        this._manifests = await Promise.all(this.loadConnectorManifests(fullManifestsPath));
     }
 
     public createConnectorProviders(): Provider[] {
-        return this._manifests.map(item => {
-            return this.createConnectorProvider(item);
-        });        
+        return this._manifests.reduce((providers, manifest) => {
+            if (manifest.autoLoad) {
+                // only add providers for connectors that should be loaded
+                providers.push(this.createConnectorProvider(manifest));
+            }
+            return providers;
+        }, []);        
     }
 
     public async createConnectorModules(): Promise<DynamicModule[]> {
-        const filePaths = this._manifests.reduce((availableFilePaths, item) => {
-            if (item.moduleFilePath) {
-                const fullPath = path.normalize(path.join(process.cwd(), item.moduleFilePath));
-                availableFilePaths.push(fullPath);
+        const filePaths = this._manifests.reduce((availableFilePaths, manifest) => {
+            if (manifest.autoLoad) {
+                if (manifest.moduleFilePath) {
+                    const fullPath = path.normalize(path.join(process.cwd(), manifest.moduleFilePath));
+                    availableFilePaths.push(fullPath);
+                } else {
+                    // do not throw an error but log and continue
+                    Logger.warn(`The moduleFilePath for connector '${manifest.name}' is not defined. ` +
+                                `Skipping.`, 'LoadConnectorManifests')
+                }
             } else {
-                // do not throw an error but log and continue
-                Logger.warn(`Error loading module for connector '${item.name}'. moduleFilePath not defined in connector manifest. Skipping.`)
+                // log - as may be useful to know!
+                Logger.warn(`Autoload for connector '${manifest.name}' is disabled. ` +
+                            `Skipping.`, 'LoadConnectorManifests')
             }
             return availableFilePaths;
         }, []);  
@@ -51,7 +62,7 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
         return this.loadConnectorModulesFromFiles(filePaths);
     }
 
-    private createManifestServices(connectorManifestsPath): Promise<IConnectorManifest>[] {
+    private loadConnectorManifests(connectorManifestsPath: string): Promise<IConnectorManifest>[] {
         Logger.log(`Searching for connector manifests in ${connectorManifestsPath}`, 'LoadConnectorManifests');
         const manifestFiles =  this.searchManifestsInFolder(connectorManifestsPath);
         // TODO: ideally inject this (See loader module comments for details)

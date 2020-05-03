@@ -4,6 +4,7 @@
     "author": "IBM",
     "name": "Starter Connector",
     "description": "A skeleton starter module for building new connectors.",
+    "autoLoad": false,
     "moduleFilePath": "/dist/libs/connectors/starter/src/starter-connector.module.js",
     "settings": [
         {
