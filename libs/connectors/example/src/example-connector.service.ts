@@ -19,7 +19,7 @@ export class ExampleConnectorService implements OnModuleInit {
     constructor(@Connector(CONNECTOR_ID) private baseConnectorService: IBaseConnectorService) {}    
     
     async onModuleInit() {
-        Logger.debug('Initializing example connector.', 'ExampleConnector')
+        Logger.debug('Initializing example connector.', this.baseConnectorService.connectorName)
         try {
             const dataSettingsResult = await this.baseConnectorService.getSettingValueAsync(SETTING_NAME_PERSONDATAFILE);
             const personData = JSON.parse(dataSettingsResult.data);
@@ -35,7 +35,7 @@ export class ExampleConnectorService implements OnModuleInit {
 
         // Retrieve a header value and output to log
         const userAgent = serviceRequest.getHeader('user-agent');
-        Logger.log(`Request from user-agent '${userAgent}'.`, 'ExampleConnector');
+        Logger.log(`Request from user-agent '${userAgent}'.`, this.baseConnectorService.connectorName);
 
         // Pull out the search term using the identifier defined in the client configuration
         const term = serviceRequest.getConditionValue<string>("term");
