@@ -32,15 +32,9 @@ export interface IItemTypeMappingDto {
 
 }
 
-export interface IEntityMappingDto extends IItemTypeMappingDto {
+export type IEntityMappingDto = IItemTypeMappingDto
 
-
-}
-
-export interface ILinkMappingDto extends IItemTypeMappingDto {
-
-
-}
+export type ILinkMappingDto = IItemTypeMappingDto
 
 export interface IPropertyMappingDto {
 

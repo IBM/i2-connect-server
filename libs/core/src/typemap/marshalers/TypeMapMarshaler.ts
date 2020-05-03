@@ -33,15 +33,9 @@ export interface IItemTypeMapping {
 
 }
 
-export interface IEntityMapping extends IItemTypeMapping {
+export type IEntityMapping = IItemTypeMapping
 
-
-}
-
-export interface ILinkMapping extends IItemTypeMapping {
-
-
-}
+export type ILinkMapping = IItemTypeMapping
 
 export interface IPropertyMapping {
 

@@ -15,7 +15,7 @@ export class UtilFileIO {
         return await fse.readFile(path, encoding);
     }
 
-    static getFilesInFolder(folderPath: string, includeDirs: boolean = false) {
+    static getFilesInFolder(folderPath: string, includeDirs = false) {
         const files = fse.readdirSync(folderPath);
 
         return files.filter((file) => {

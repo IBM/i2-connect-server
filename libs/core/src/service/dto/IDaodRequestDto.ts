@@ -41,9 +41,7 @@ export interface IDaodSeedItemDto {
 
 }
 
-export interface IDaodSeedEntityDto extends IDaodSeedItemDto {
-
-}
+export type IDaodSeedEntityDto = IDaodSeedItemDto
 
 export interface IDaodSeedLinkDto extends IDaodSeedItemDto {
 

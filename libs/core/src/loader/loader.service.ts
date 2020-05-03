@@ -80,7 +80,7 @@ export class LoaderService implements ILoaderService, IConnectorModulesFactory, 
 
     private async loadConnectorModulesFromFiles(filePaths: string[]): Promise<DynamicModule[]> {
 
-        const loadedModules: Array<DynamicModule> = new Array();
+        const loadedModules: Array<DynamicModule> = [];
         for (const filePath of filePaths) {
             Logger.log(`Loading connector module from ${filePath}`, 'LoadConnectorModule');
             loadedModules.push(await this.loadModule(filePath));

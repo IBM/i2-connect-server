@@ -16,10 +16,7 @@ export interface IDaodItemDto {
 
 }
 
-export interface IDaodEntityDto extends IDaodItemDto {
-
-
-}
+export type IDaodEntityDto = IDaodItemDto
 
 export interface IDaodLinkDto extends IDaodItemDto {
 

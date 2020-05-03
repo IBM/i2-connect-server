@@ -44,10 +44,7 @@ export interface IDaodItem {
 
 }
 
-export interface IDaodEntity extends IDaodItem {
-
-
-}
+export type IDaodEntity = IDaodItem
 
 export interface IDaodLink extends IDaodItem {
 

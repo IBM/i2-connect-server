@@ -263,7 +263,7 @@ export class ServiceMarshaler {
             throw new Error("Id or name properties are missing for a connector service.");
         }
         if (!dto.acquireUrl) {
-            throw new Error(`AquireUrl property is missing for connector service '${dto.id}'.`);
+            throw new Error(`AcquireUrl property is missing for connector service '${dto.id}'.`);
         }
         if (!dto.clientConfigType) {
             throw new Error(`ClientConfigType property is missing for connector service '${dto.id}'.`);
@@ -456,7 +456,7 @@ export class FormConditionMarshaler {
                 break;
             case FormConditionLogicalTypeEnum.SELECTED_FROM:
             case FormConditionLogicalTypeEnum.SUGGESTED_FROM:
-                if (formSection.logicalType == FormConditionLogicalTypeEnum.SELECTED_FROM &&
+                if (formSection.logicalType === FormConditionLogicalTypeEnum.SELECTED_FROM &&
                     !dto.possibleValues) {
                         throw new Error("Possible values missing for a 'selected from' search form condition.");
                 }

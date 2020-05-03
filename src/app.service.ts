@@ -6,13 +6,6 @@ export class AppService {
     constructor() {}
 
     getRunning(): string {
-        return `
-            <html>
-                <head></head>
-                <body>
-                    <h2>Server is running.</h2>
-                </body>
-            </html>
-        `;
+        return `The i2 Connector server is running.`;
     }
 }

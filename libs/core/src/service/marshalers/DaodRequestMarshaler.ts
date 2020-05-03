@@ -109,9 +109,7 @@ export interface IDaodSeedItem {
 
 }
 
-export interface IDaodSeedEntity extends IDaodSeedItem {
-    
-}
+export type IDaodSeedEntity = IDaodSeedItem
 
 export interface IDaodSeedLink extends IDaodSeedItem {
 
