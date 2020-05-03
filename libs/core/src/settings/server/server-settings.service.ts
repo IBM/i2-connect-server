@@ -4,7 +4,7 @@ import Joi = require('@hapi/joi');
 import { NODE_ENV, ENV_SERVER_PORT, DEFAULT_SERVER_PORT, ENV_CONNECTORS_HOME, DEFAULT_CONNECTORS_HOME } from '../../constants';
 
 @Injectable()
-export class ServerEnvironmentService {
+export class ServerSettingsService {
 
     constructor(private configService: ConfigService) {}
 

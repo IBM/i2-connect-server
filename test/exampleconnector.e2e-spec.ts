@@ -4,13 +4,13 @@ import * as request from 'supertest';
 
 import { IConnectorServiceRequest, IDaodResults, IDaodValidationResponse } from '@app/core/service';
 import { BaseConnectorService, IBaseConnectorService, IConnectorProvidersFactory, ConnectorsModule } from '@app/core/connectors';
-import { ConnectorEnvironmentModule } from '@app/core/settings';
+import { ConnectorsSettingsModule } from '@app/core/settings';
 import { IConnectorConfigDto } from '@app/core/config';
 import { ITypeMap } from '@app/core/typemap';
 
 import { CONNECTOR_ID, CONTEXT_ROOT, SERVICE_NAMES } from '../libs/connectors/example/src/constants';
-import { ExampleConnectorService } from '../libs/connectors/example/src/example.connector.service';
-import { ExampleConnectorController } from '../libs/connectors/example/src/example.connector.controller';
+import { ExampleConnectorService } from '../libs/connectors/example/src/example-connector.service';
+import { ExampleConnectorController } from '../libs/connectors/example/src/example-connector.controller';
 import { DEFAULT_URL_PATH_CONFIG, DEFAULT_URL_PATH_CHARTINGSCHEMES, DEFAULT_URL_PATH_SCHEMA, DEFAULT_URL_PATH_RELOAD, DEFAULT_URL_PATH_ACQUIRE, DEFAULT_URL_PATH_VALIDATE } from '@app/core';
 
 describe('ExampleConnectorController (e2e)', () => {
@@ -32,7 +32,7 @@ describe('ExampleConnectorController (e2e)', () => {
     beforeAll(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [
-                ConnectorEnvironmentModule,
+                ConnectorsSettingsModule,
                 ConnectorsModule.registerAsync(new ConnectorFactory())
             ],
             controllers: [

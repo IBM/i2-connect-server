@@ -6,7 +6,7 @@ import { BaseConnectorController, IBaseConnectorService, Connector } from '@app/
 import { IConnectorServiceRequest, IDaodResults, IDaodValidationResponse } from '@app/core/service';
 
 // the connector service itself
-import { ExampleConnectorService } from './example.connector.service';
+import { ExampleConnectorService } from './example-connector.service';
 import { CONNECTOR_ID, CONTEXT_ROOT, SERVICE_NAMES } from './constants';
 
 @Controller(CONTEXT_ROOT)

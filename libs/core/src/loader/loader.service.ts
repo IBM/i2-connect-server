@@ -2,7 +2,7 @@ import * as path from 'path';
 import { Logger, DynamicModule, Provider } from '@nestjs/common';
 import { IConnectorManifest } from '../manifest/marshalers/ConnectorManifestMarshaler';
 import { ConnectorManifestService } from '../manifest/manifest.service';
-import { BaseConnectorService } from '../connectors/base.connector.service';
+import { BaseConnectorService } from '../connectors/base-connector.service';
 import { IConnectorProvidersFactory } from '../connectors/interfaces/IBaseConnectorProvidersFactory';
 import { IBaseConnectorService } from '../connectors/interfaces/IBaseConnectorService';
 import { UtilFileIO } from '../util/fileio';

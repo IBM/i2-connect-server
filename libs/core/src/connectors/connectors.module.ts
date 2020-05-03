@@ -1,12 +1,12 @@
 import { Module, DynamicModule, Global } from '@nestjs/common';
-import { BaseConnectorService } from './base.connector.service';
+import { BaseConnectorService } from './base-connector.service';
 import { IConnectorProvidersFactory } from './interfaces/IBaseConnectorProvidersFactory';
 import { ConnectorConfigModule } from '../config/config.module';
 import { ConnectorSchemaModule } from '../schema/schema.module';
 import { ConnectorChartingSchemesModule } from '../chartingSchemes/chartingSchemes.module';
 import { ConnectorTypeMapModule } from '../typemap/typemap.module';
 import { ConnectorTransformModule } from '../transforms/transform.module';
-import { ConnectorEnvironmentModule } from '../settings/connector/connector.env.module';
+import { ConnectorsSettingsModule } from '../settings/connector/connector-settings.module';
 
 @Global()
 @Module({})
@@ -19,7 +19,7 @@ export class ConnectorsModule {
         return {
             module: ConnectorsModule,
             imports: [
-                ConnectorEnvironmentModule,
+                ConnectorsSettingsModule,
                 ConnectorConfigModule,
                 ConnectorSchemaModule,
                 ConnectorChartingSchemesModule,

@@ -1,1 +1,1 @@
-export * from './src/example.connector.module';
+export * from './src/example-connector.module';

@@ -16,7 +16,7 @@ import { ITypeMap } from '../typemap/marshalers/TypeMapMarshaler';
 import { IConnectorTransformItem } from '../transforms/interfaces/ITransformItem';
 import { ConnectorTransformService } from '../transforms/transform.service';
 import { UtilSettings, ISettingsItemData } from '../util/settings';
-import { ConnectorEnvironmentService } from '../settings/connector/connector.env.service';
+import { ConnectorsSettingsService } from '../settings/connector/connector-settings.service';
 import { IReloadCacheResponseDto, IServiceRequestQuery } from '../service';
 
 @Injectable({ scope: Scope.TRANSIENT })
@@ -30,7 +30,7 @@ export class BaseConnectorService implements IBaseConnectorService {
     private _connectorTypeMapItems: IConnectorTypeMapItem[];
     private _connectorTransformItems: IConnectorTransformItem[];
 
-    constructor(private _connSettings: ConnectorEnvironmentService,
+    constructor(private _connSettings: ConnectorsSettingsService,
                 private _configService: ConnectorConfigService,
                 private _schemaService: ConnectorSchemaService,
                 private _chartingSchemesService: ConnectorChartingSchemesService,

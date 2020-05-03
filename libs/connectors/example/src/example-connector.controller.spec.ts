@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ExampleConnectorController } from './example.connector.controller';
-import { ExampleConnectorService } from './example.connector.service';
+import { ExampleConnectorController } from './example-connector.controller';
+import { ExampleConnectorService } from './example-connector.service';
 import { IConnectorProvidersFactory, IBaseConnectorService, BaseConnectorService, ConnectorsModule } from '@app/core/connectors';
 import { CONNECTOR_ID } from './constants';
 import { IConnectorConfigDto } from '@app/core/config';

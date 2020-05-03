@@ -4,7 +4,7 @@ import Joi = require('@hapi/joi');
 import { ENV_CONN_LOGPAYLOADS } from '../../constants';
 
 @Injectable()
-export class ConnectorEnvironmentService {
+export class ConnectorsSettingsService {
 
     constructor(private configService: ConfigService) {}
 
