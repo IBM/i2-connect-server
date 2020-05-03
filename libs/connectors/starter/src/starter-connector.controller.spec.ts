@@ -5,7 +5,7 @@ import { IConnectorProvidersFactory, IBaseConnectorService,
          BaseConnectorService, ConnectorsModule } from '@app/core/connectors';
 import { IConnectorConfigDto } from '@app/core/config';
 import { ITypeMap } from '@app/core/typemap';
-import { ConnectorEnvironmentModule } from '@app/core/settings';
+import { ConnectorsSettingsModule } from '@app/core/settings';
 
 import { StarterConnectorController } from './starter-connector.controller';
 import { StarterConnectorService } from './starter-connector.service';
@@ -20,7 +20,7 @@ describe('StarterConnectorController', () => {
 
         const app: TestingModule = await Test.createTestingModule({
             imports: [
-                ConnectorEnvironmentModule,
+                ConnectorsSettingsModule,
                 ConnectorsModule.registerAsync(new ConnectorFactory())
             ],
             controllers: [

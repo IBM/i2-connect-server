@@ -6,7 +6,7 @@ import { CONNECTOR_ID } from './constants';
 import { IConnectorConfigDto } from '@app/core/config';
 import { ITypeMap } from '@app/core/typemap';
 import { Provider } from '@nestjs/common';
-import { ConnectorEnvironmentModule } from '@app/core/settings';
+import { ConnectorsSettingsModule } from '@app/core/settings';
 
 
 describe('ExampleConnectorController', () => {
@@ -17,7 +17,7 @@ describe('ExampleConnectorController', () => {
 
         const app: TestingModule = await Test.createTestingModule({
             imports: [
-                ConnectorEnvironmentModule,
+                ConnectorsSettingsModule,
                 ConnectorsModule.registerAsync(new ConnectorFactory())
             ],
             controllers: [
