@@ -1,0 +1,26 @@
+{
+    "entityMappings": [
+        {
+            "id": "i2.entity",
+            "schemaTypeId": "ET1",
+            "propertyMappings": [
+                {
+                    "id": "i2.property",
+                    "schemaPropertyId": "P1"
+                }
+            ]
+        }
+    ],
+    "linkMappings": [
+        {
+            "id": "i2.link",
+            "schemaTypeId": "LT1",
+            "propertyMappings": [
+                {
+                    "id": "i2.property",
+                    "schemaPropertyId": "P2"
+                }
+            ]
+        }
+    ]
+}

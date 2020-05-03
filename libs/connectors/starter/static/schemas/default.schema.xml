@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaFragment>
+	<ItemTypes>
+		<EntityTypes></EntityTypes>
+		<LinkTypes></LinkTypes>
+	</ItemTypes>
+	<Id>enter_unique_id_here</Id>
+	<LabelingScheme Name="enter_labelling_scheme_name_here"
+		Id="enter_unique_id_here">
+		<LabelDefinitions>
+		</LabelDefinitions>
+	</LabelingScheme>
+</SchemaFragment>

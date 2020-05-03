@@ -1,0 +1,55 @@
+{
+    "defaultValues": {
+        "timeZoneId": "Europe/London",
+        "entityTypeId": "i2.person",
+        "linkTypeId": "i2.associate",
+        "linkDirection": "NONE"
+    },
+    "schemaUrl": "/schema",
+    "chartingSchemesUrl": "/chartingSchemes",
+    "services": [
+        {
+            "id": "service1",
+            "name": "Service 1",
+            "description": "A skeleton service.",
+            "acquireUrl": "/service_name_1/acquire",
+            "validateUrl": "/service_name_1/validate",
+            "clientConfigType": "FORM",
+            "clientConfigId": "form1",
+            "resultItemTypeIds": [
+                "i2.entity"
+            ],
+            "seedConstraints": {
+                "seedTypes": {
+                    "allowedTypes": "ENTITY",
+                    "itemTypes": [
+                        {
+                            "id": "i2.entity",
+                            "min": 1,
+                            "max": 1
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "clientConfigs": [
+        {
+            "id": "form1",
+            "config": {
+                "sections": [
+                    {
+                        "conditions": [
+                            {
+                                "id": "condition1",
+                                "label": "Condition 1",
+                                "mandatory": true,
+                                "logicalType": "SINGLE_LINE_STRING"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

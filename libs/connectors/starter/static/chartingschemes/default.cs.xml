@@ -1,0 +1,11 @@
+<trn:ChartingSchemeList
+	xmlns:trn="http://www.i2group.com/Schemas/2012-05-29/ModelData/v2">
+	<ChartingSchemes>
+		<ChartingScheme Name="enter_charting_scheme_name_here">
+			<XmlChartingScheme>
+				<EntityMappings>
+				</EntityMappings>
+			</XmlChartingScheme>
+		</ChartingScheme>
+	</ChartingSchemes>
+</trn:ChartingSchemeList>
