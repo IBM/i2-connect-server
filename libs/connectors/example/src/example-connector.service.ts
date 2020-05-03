@@ -7,28 +7,18 @@ import { IConnectorServiceRequest, IDaodResults, IDaodValidationResponse, IDaodL
 import { LinkDirectionEnum } from '@app/core/config';
 
 // connector helpers
-import { PersonUtils, IPerson } from './utils/PersonUtils';
-import { CONNECTOR_ID, SETTING_NAME_PERSONDATAFILE, TRANSFORM_NAME_PERSON } from './constants';
+import { PeopleSearchService, IPerson } from './people/people-search.service';
+import { CONNECTOR_ID} from './constants';
 
 
 @Injectable()
 export class ExampleConnectorService implements OnModuleInit {
 
-    private _personUtils: PersonUtils;
-
-    constructor(@Connector(CONNECTOR_ID) private baseConnectorService: IBaseConnectorService) {}    
+    constructor(@Connector(CONNECTOR_ID) private baseConnectorService: IBaseConnectorService,
+                private peopleSearchService: PeopleSearchService) {}    
     
     async onModuleInit() {
-        Logger.debug('Initializing example connector.', this.baseConnectorService.connectorName)
-        try {
-            const dataSettingsResult = await this.baseConnectorService.getSettingValueAsync(SETTING_NAME_PERSONDATAFILE);
-            const personData = JSON.parse(dataSettingsResult.data);
-            const people = personData.people as IPerson[];
-            const personTransform = this.baseConnectorService.getTransform(TRANSFORM_NAME_PERSON);
-            this._personUtils = new PersonUtils(people, personTransform);
-        } catch (err) {
-            throw Error(`Problem initializing example connector service: ${err.message}`);
-        }
+        Logger.debug('Initializing connector.', this.baseConnectorService.connectorName)
     }
 
     async exampleSearchAquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
@@ -40,14 +30,14 @@ export class ExampleConnectorService implements OnModuleInit {
         // Pull out the search term using the identifier defined in the client configuration
         const term = serviceRequest.getConditionValue<string>("term");
 
-        const results = this._personUtils.acquirePeople((person: IPerson) => {
+        const results = this.peopleSearchService.acquirePeople((person: IPerson) => {
             // Use the search term to filter the data set
             // "term" is a mandatory condition, so it always has a value
             if (term === "*") {
                 return true;
             } else {
-                return this._personUtils.caseInsensitiveContains(person.forename, term)
-                    || this._personUtils.caseInsensitiveContains(person.surname, term);
+                return this.peopleSearchService.caseInsensitiveContains(person.forename, term)
+                    || this.peopleSearchService.caseInsensitiveContains(person.surname, term);
             }
         });
 
@@ -74,7 +64,7 @@ export class ExampleConnectorService implements OnModuleInit {
         // Potential seeds that came from this source
         const externalIds = serviceRequest.extractExternalIdsFromI2ConnectSources(seed.sourceIds);
 
-        const results = this._personUtils.acquirePeople((person: IPerson) => {
+        const results = this.peopleSearchService.acquirePeople((person: IPerson) => {
             // Filter out records that are known to be charted, to prevent duplicates
             if (externalIds.has(person.id)) {
                 return false;
@@ -104,15 +94,15 @@ export class ExampleConnectorService implements OnModuleInit {
         
             // Find all people in the data set for this seed
             // If a chart item contains multiple records, a single seed can have multiple source identifiers
-            const seedPeople = this._personUtils.lookupPeople((person: IPerson) => externalIds.has(person.id));
+            const seedPeople = this.peopleSearchService.lookupPeople((person: IPerson) => externalIds.has(person.id));
         
             seedPeople.forEach(seedPerson => {
                 // Look up the friends
                 const friendIds = new Set(seedPerson.friends);
-                const friends = this._personUtils.lookupPeople((friend: IPerson) => friendIds.has(friend.id));
+                const friends = this.peopleSearchService.lookupPeople((friend: IPerson) => friendIds.has(friend.id));
             
                 // Add the friends to the response
-                friends.map((friend: IPerson) => this._personUtils.transformPerson(friend)).forEach(friend => {
+                friends.map((friend: IPerson) => this.peopleSearchService.transformPerson(friend)).forEach(friend => {
                     // Do not add duplicate entities
                     if (!responseEntities.some(e => e.id === friend.id)) {
                         responseEntities.push(friend);

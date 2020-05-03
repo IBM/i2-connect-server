@@ -1,5 +1,8 @@
 import { IDaodResults, IDaodEntity } from "@app/core/service";
 import { UtilJsonata } from "@app/core/util";
+import { Injectable, OnModuleInit } from "@nestjs/common";
+import { IBaseConnectorService, Connector } from "@app/core/connectors";
+import { CONNECTOR_ID, SETTING_NAME_PERSONDATAFILE, TRANSFORM_NAME_PERSON } from "../constants";
     
 export interface IPerson {
     id: string;
@@ -11,10 +14,25 @@ export interface IPerson {
     friends: string[];
 }
 
-export class PersonUtils {
+@Injectable()
+export class PeopleSearchService implements OnModuleInit {
     
-    constructor(private _personData: IPerson[],
-                private _personTransform: string) {
+    personData: IPerson[];
+    personTransform: string;
+
+    constructor(@Connector(CONNECTOR_ID) private baseConnectorService: IBaseConnectorService) {
+
+    }
+
+    async onModuleInit() {    
+        try {
+            const dataSettingsResult = await this.baseConnectorService.getSettingValueAsync(SETTING_NAME_PERSONDATAFILE);
+            const personData = JSON.parse(dataSettingsResult.data);
+            this.personData = personData.people as IPerson[];
+            this.personTransform = this.baseConnectorService.getTransform(TRANSFORM_NAME_PERSON);
+        } catch (err) {
+            throw Error(`Problem initializing PersonUtils: ${err.message}`);
+        }
     }
 
     /**
@@ -37,7 +55,7 @@ export class PersonUtils {
      * @returns {IPerson[]} - The people that pass the filter
      */
     public lookupPeople(personFilter: any): IPerson[] {
-        return this._personData.filter(personFilter);
+        return this.personData.filter(personFilter);
     }
     
     /**
@@ -45,7 +63,7 @@ export class PersonUtils {
      * @param {IPerson} person - The person from the data set
      */
     public transformPerson(person: IPerson): IDaodEntity {
-        return UtilJsonata.transform(person, this._personTransform) as IDaodEntity;
+        return UtilJsonata.transform(person, this.personTransform) as IDaodEntity;
     }
 
     /**
