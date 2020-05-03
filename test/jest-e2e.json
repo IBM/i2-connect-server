@@ -16,7 +16,7 @@
     "moduleNameMapper": {
         "@app/core/(.*)": "<rootDir>/../libs/core/src/$1",
         "@app/core": "<rootDir>/../libs/core/src",
-        "@app/connectors/(.*)": "<rootDir>/../libs/connectors/src/$1",
-        "@app/connectors": "<rootDir>/../libs/connectors/src"
+        "@app/connectors/(.*)": "<rootDir>/../libs/connectors/$1",
+        "@app/connectors": "<rootDir>/../libs/connectors"
     }
 }

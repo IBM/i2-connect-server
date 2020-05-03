@@ -18,7 +18,7 @@
       "type": "library",
       "root": "libs/connectors",
       "entryFile": "index",
-      "sourceRoot": "libs/connectors/src",
+      "sourceRoot": "libs/connectors",
       "compilerOptions": {
         "tsConfigPath": "libs/connectors/tsconfig.lib.json"
       }

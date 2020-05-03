@@ -18,10 +18,10 @@
         "libs/core/src/*"
       ],
       "@app/connectors": [
-        "libs/connectors/src"
+        "libs/connectors"
       ],
       "@app/connectors/*": [
-        "libs/connectors/src/*"
+        "libs/connectors/*"
       ]
     }
   },
