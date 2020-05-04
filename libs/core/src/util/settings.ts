@@ -96,8 +96,11 @@ export class UtilSettings {
     }
     
     private static async getEnvSettingsValue(connectorSetting: IConnectorSetting): Promise<ISettingsValue> {
-        // TODO: implement this!
-        throw new NotImplementedException();
+        const envSettingName = connectorSetting.value.toString();
+        return {
+            type: ConnectorSettingTypeEnum.ENV,
+            value: process.env[envSettingName]
+        };
     }
 
     private static throwError(connectorSettingId: string, errDetails: string): void {
