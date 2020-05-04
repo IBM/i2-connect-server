@@ -16,7 +16,7 @@ export interface IBaseConnectorService {
 
     getTypeMap(siteId: string): ITypeMap;
     getTransform(id: string): string;
-    getSettingValueAsync(id: string): Promise<ISettingsItemData>;
+    getSettingValueAsync(id: string, isRequired?: boolean): Promise<any>;
 
     getSettingLogPayloads(): boolean;
     reloadCachesAsync(): Promise<IReloadCacheResponseDto>;

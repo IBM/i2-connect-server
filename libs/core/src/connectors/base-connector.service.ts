@@ -129,12 +129,22 @@ export class BaseConnectorService implements IBaseConnectorService {
         }
     }
 
-    public async getSettingValueAsync(id: string): Promise<ISettingsItemData> {
+    public async getSettingValueAsync(id: string, isRequired?: boolean): Promise<any> {
         try {
-            const connectorSetting = ConnectorManifestService.getSetting(this._connectorManifest, id, true);
-            const settingsValue = await UtilSettings.getSettingsValue(connectorSetting);
-            // assumed that will be getting item data returned
-            return settingsValue.value as ISettingsItemData;
+            let returnValue = null;
+            // get setting from the manifest
+            const connectorSetting = ConnectorManifestService.getSetting(this._connectorManifest, id, isRequired);
+            if (connectorSetting) {
+                // fetch the actual value
+                const settingsValue = await UtilSettings.getSettingsValue(connectorSetting);
+                // assumed that will be getting item data returned
+                returnValue = settingsValue ? settingsValue.value : null;
+            }
+            // check there is a value to return (if it is required)
+            if (!returnValue && isRequired) {
+                throw Error(`No value returned for setting '${id}' for connector '${this._connectorId}'.`);
+            }
+            return returnValue;        
         } catch (err) {
             throw Error(`Problem retrieving setting '${id}' for connector '${this._connectorId}'. ${err.message}`)
         }        
