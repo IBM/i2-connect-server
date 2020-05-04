@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServerSettingsModule } from '@app/core/settings';
 import { LoadersModule } from '@app/core/loader';
+import { WebProviderModule } from '@app/core/providers';
 
 @Module({
     imports: [
+        WebProviderModule,
         ServerSettingsModule,
         LoadersModule.registerAsync()
     ],

@@ -1,5 +1,5 @@
 import { Module, HttpModule } from '@nestjs/common';
-import { WebProviderService } from './web.provider.service';
+import { WebProviderService } from './web-provider.service';
 
 @Module({
     imports: [
