@@ -83,7 +83,7 @@ export abstract class BaseConnectorController
         const result = await this.executeRequest(serviceRequest);
         const endTime = Date.now();
         this.logResponse(`${params.serviceName}/${IServiceRequestMethodTypeEnum[params.methodType]}`,
-                         sourceIp, request, this.baseConnectorService.connectorName, startTime, endTime);
+                         sourceIp, result, this.baseConnectorService.connectorName, startTime, endTime);
         return result;
     }
 
