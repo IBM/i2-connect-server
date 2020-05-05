@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServerSettingsModule } from '@app/core/settings';
@@ -7,7 +7,7 @@ import { WebProviderModule } from '@app/core/providers';
 
 @Module({
     imports: [
-        WebProviderModule,
+        HttpModule,
         ServerSettingsModule,
         LoadersModule.registerAsync()
     ],
