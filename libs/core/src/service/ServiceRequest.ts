@@ -5,6 +5,7 @@ import { ConnectorTypeMapService, PropertyMappingIdTypeEnum } from "../typemap/t
 import { IServiceRequestQuery } from "./marshalers/ServiceRequestQueryMarshaler";
 import { IServiceRequestParams } from "./marshalers/ServiceRequestParamsMarshaler";
 import { IServiceRequestHeaders } from "./marshalers/ServiceRequestHeadersMarshaler";
+import { Logger } from "@nestjs/common";
 
 export interface IConnectorServiceRequest {
 
@@ -13,8 +14,8 @@ export interface IConnectorServiceRequest {
     readonly mappedPayload: IDaodRequestPayload;
 
     getHeader(key: string): string;
-    getConditionValue<T extends string | boolean | number>(conditionId: string): T;
-    extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[]): Set<string>
+    getConditionValue<T extends string | boolean | number>(conditionId: string, isRequired?: boolean, defaultValue?: T): T;
+    extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string): Set<string>
     
 }
 
@@ -118,7 +119,7 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
      * @param request The search request sent by i2 Analyze
      * @param conditionId The condition id
      */
-    public getConditionValue<T extends string | boolean | number>(conditionId: string): T {
+    public getConditionValue<T extends string | boolean | number>(conditionId: string, isRequired?: boolean, defaultValue?: T): T {
         const condition = this._mappedPayload.conditions && this._mappedPayload.conditions.find(x => x.id === conditionId);
         let value = null;
         if (condition) {
@@ -147,17 +148,23 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
                     value = condition.value as string;
             }
         }
-        return value as T;
+        if (!value && isRequired) {
+            throw new Error(`Condition '${conditionId}' is required but no value recieved in payload.`);
+        }
+        return value ? value as T : defaultValue;
     }
 
     /**
      * Extracts external identifiers from the keys of i2 Connect source identifiers
      * @param {IDaodOriginIdentifier[]=} sourceIds - The source identifiers to query
+     * @param {string} i2aConnectorId - Optional i2 Analyze connector id (as defined in the topology file)
      * @returns {Set<string>} - The set of external identifiers from i2 Connect sources
      */
-    public extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[]): Set<string> {
+    public extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string): Set<string> {
         // i2 Connect keys have the format [connectorId, itemTypeId, externalId]
-        const externalIds = sourceIds ? sourceIds.filter(this.isI2ConnectSeed).map(s => s.key[2]) : [];
+        const externalIds = sourceIds ? sourceIds
+            .filter(s => this.isI2ConnectSeed(s, i2aConnectorId))
+            .map(s => s.key[2]) : [];
         return new Set(externalIds);
     }
 
@@ -167,10 +174,14 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
 
     /**
      * Determines whether a source identifier is from the i2 Connect gateway
+     * and optionally from a specific connector source
      * @param {IDaodOriginIdentifier} sourceId - The source identifier
+     * @param {string} i2aConnectorId - Optional i2 Analyze connector id (as defined in the topology file)
      */
-    private isI2ConnectSeed(sourceId: IDaodOriginIdentifier): boolean {
-        return sourceId.type === "OI.DAOD";
+    private isI2ConnectSeed(sourceId: IDaodOriginIdentifier, i2aConnectorId?: string): boolean {
+        return i2aConnectorId
+            ? sourceId.key[0] === i2aConnectorId && sourceId.type === "OI.DAOD"
+            : sourceId.type === "OI.DAOD";
     }
     
 
