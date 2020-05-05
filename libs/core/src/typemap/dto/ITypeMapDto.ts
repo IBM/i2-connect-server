@@ -23,7 +23,7 @@ export interface IItemTypeMappingDto {
     /**
      * Corresponding i2 Analyze schema type id (i2 Analyze deployment specific)
      */
-    schemaTypeId: string;
+    schemaTypeId?: string;
 
     /**
      * Property mappings for this entity/link type
@@ -46,6 +46,6 @@ export interface IPropertyMappingDto {
     /**
      * Corresponding i2 Analyze schema type id (i2 Analyze deployment specific)
      */
-    schemaPropertyId: string;
+    schemaPropertyId?: string;
 
 }

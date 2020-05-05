@@ -24,7 +24,7 @@ export interface IItemTypeMapping {
     /**
      * Corresponding i2 Analyze schema type id (i2 Analyze deployment specific)
      */
-    schemaTypeId: string;
+    schemaTypeId?: string;
 
     /**
      * Property mappings for this entity/link type
@@ -47,7 +47,7 @@ export interface IPropertyMapping {
     /**
      * Corresponding i2 Analyze schema type id (i2 Analyze deployment specific)
      */
-    schemaPropertyId: string;
+    schemaPropertyId?: string;
 
 }
 
@@ -76,10 +76,7 @@ export class EntityMappingMarshaler {
         }
         if (!dto.id) {
             throw new Error("Entity mapping has no id property.");
-        }
-        if (!dto.schemaTypeId) {
-            throw new Error("Entity mapping has no schemaId property.");
-        }        
+        }     
         return {
             id: dto.id,
             schemaTypeId: dto.schemaTypeId,
@@ -97,10 +94,7 @@ export class LinkMappingMarshaler {
         }
         if (!dto.id) {
             throw new Error("Link mapping has no id property.");
-        }
-        if (!dto.schemaTypeId) {
-            throw new Error("Link mapping has no schemaId property.");
-        }       
+        }     
         return {
             id: dto.id,
             schemaTypeId: dto.schemaTypeId,
@@ -115,10 +109,7 @@ export class PropertyMappingMarshaler {
     public static marshalFromDto(dto: IPropertyMappingDto): IPropertyMapping {
         if (!dto.id) {
             throw new Error("Entity mapping has no id property.");
-        }
-        if (!dto.schemaPropertyId) {
-            throw new Error("Entity mapping has no schemaPropertyId property.");
-        }       
+        }    
         return {
             id: dto.id,
             schemaPropertyId: dto.schemaPropertyId,
