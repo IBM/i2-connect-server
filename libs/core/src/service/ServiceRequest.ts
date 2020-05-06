@@ -13,10 +13,11 @@ export interface IConnectorServiceRequest {
     readonly params: IServiceRequestParams;
     readonly mappedPayload: IDaodRequestPayload;
 
-    getHeader(key: string): string;
+    getHeader(key: string, isRequired?: boolean): string;
     getConditionValue<T extends string | boolean | number>(conditionId: string, isRequired?: boolean, defaultValue?: T): T;
-    extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string): Set<string>
-    
+    getIdsFromDaodSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string, isRequired?: boolean): string[];
+    getEntitySeeds(typeIdsFilter?: string[], totalCount?: number, isRequired?: boolean): IDaodSeedItem[];
+    getLinkSeeds(typeIdsFilter?: string[], totalCount?: number, isRequired?: boolean): IDaodSeedItem[];
 }
 
 export class ConnectorServiceRequest implements IConnectorServiceRequest {
@@ -149,7 +150,7 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
             }
         }
         if (!value && isRequired) {
-            throw new Error(`Condition '${conditionId}' is required but no value recieved in payload.`);
+            throw new Error(`Condition '${conditionId}' is required but no value received in payload.`);
         }
         return value ? value as T : defaultValue;
     }
@@ -160,16 +161,66 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
      * @param {string} i2aConnectorId - Optional i2 Analyze connector id (as defined in the topology file)
      * @returns {Set<string>} - The set of external identifiers from i2 Connect sources
      */
-    public extractExternalIdsFromI2ConnectSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string): Set<string> {
+    public getIdsFromDaodSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string, isRequired?: boolean): string[] {
         // i2 Connect keys have the format [connectorId, itemTypeId, externalId]
         const externalIds = sourceIds ? sourceIds
             .filter(s => this.isI2ConnectSeed(s, i2aConnectorId))
             .map(s => s.key[2]) : [];
-        return new Set(externalIds);
+        if (externalIds.length === 0 && isRequired) {
+            throw new Error(`No seeds from source '${i2aConnectorId}' received in request.`);
+        } else {
+            return externalIds;
+        }  
     }
 
-    public getHeader(key: string): string {
-        return this._requestHeaders ? this._requestHeaders[key] : null;
+    public getHeader(key: string, isRequired?: boolean): string {
+        const value = this._requestHeaders ? this._requestHeaders[key] : null;
+        if (!value && isRequired) {
+            throw new Error(`Header '${key}' is required but no value received in request.`);
+        } else {
+            return value;
+        }
+    }
+
+    public getEntitySeeds(typeIdsFilter?: string[], totalCount: number = 0, isRequired?: boolean): IDaodSeedItem[] {
+        let seeds = [];
+        if (this.mappedPayload.seeds && 
+            this.mappedPayload.seeds.entities &&
+            this.mappedPayload.seeds.entities.length > 0) {
+                seeds = this.getSeeds(this.mappedPayload.seeds.entities, typeIdsFilter);
+        }
+        if (seeds.length < totalCount && isRequired) {
+            throw new Error(`Not enough valid seeds received in request.`);
+        } else {
+            return seeds;
+        }        
+    }
+    
+    public getLinkSeeds(typeIdsFilter?: string[], totalCount: number = 0, isRequired?: boolean) {
+        let seeds = [];
+        if (this.mappedPayload.seeds && 
+            this.mappedPayload.seeds.links &&
+            this.mappedPayload.seeds.links.length > 0) {
+                return this.getSeeds(this.mappedPayload.seeds.links, typeIdsFilter);
+        }
+        if (seeds.length < totalCount && isRequired) {
+            throw new Error(`Not enough valid seeds received in request.`);
+        } else {
+            return seeds;
+        }        
+    }
+
+    private getSeeds(seeds: IDaodSeedItem[], typeIdsFilter?: string[]) : IDaodSeedItem[] {
+        return seeds.reduce((filteredSeeds: IDaodSeedItem[], seed: IDaodSeedItem) => {
+            if (typeIdsFilter) {
+                if (typeIdsFilter.includes(seed.typeId)) {
+                    filteredSeeds.push(seed);
+                }
+            } else {
+                filteredSeeds.push(seed);
+            }
+            return filteredSeeds;
+        }, []);
     }
 
     /**

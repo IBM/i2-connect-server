@@ -62,11 +62,11 @@ export class ExampleConnectorService implements OnModuleInit {
         const dob = seed.properties["i2.dob"];
 
         // Potential seeds that came from this source
-        const externalIds = serviceRequest.extractExternalIdsFromI2ConnectSources(seed.sourceIds);
+        const externalIds = serviceRequest.getIdsFromDaodSources(seed.sourceIds);
 
         const results = this.peopleSearchService.acquirePeople((person: IPerson) => {
             // Filter out records that are known to be charted, to prevent duplicates
-            if (externalIds.has(person.id)) {
+            if (externalIds.includes(person.id)) {
                 return false;
             }
 
@@ -90,11 +90,11 @@ export class ExampleConnectorService implements OnModuleInit {
         const responseLinks = [];
         
         seedEntities.forEach(seed => {
-            const externalIds = serviceRequest.extractExternalIdsFromI2ConnectSources(seed.sourceIds);
+            const externalIds = serviceRequest.getIdsFromDaodSources(seed.sourceIds);
         
             // Find all people in the data set for this seed
             // If a chart item contains multiple records, a single seed can have multiple source identifiers
-            const seedPeople = this.peopleSearchService.lookupPeople((person: IPerson) => externalIds.has(person.id));
+            const seedPeople = this.peopleSearchService.lookupPeople((person: IPerson) => externalIds.includes(person.id));
         
             seedPeople.forEach(seedPerson => {
                 // Look up the friends
