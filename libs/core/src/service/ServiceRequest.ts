@@ -18,6 +18,7 @@ export interface IConnectorServiceRequest {
     getIdsFromDaodSources(sourceIds: IDaodOriginIdentifier[], i2aConnectorId?: string, isRequired?: boolean): string[];
     getEntitySeeds(typeIdsFilter?: string[], totalCount?: number, isRequired?: boolean): IDaodSeedItem[];
     getLinkSeeds(typeIdsFilter?: string[], totalCount?: number, isRequired?: boolean): IDaodSeedItem[];
+    getSeedProperty(seed: IDaodSeedItem, propertyName: string, isRequired?: boolean): any;
 }
 
 export class ConnectorServiceRequest implements IConnectorServiceRequest {
@@ -208,6 +209,17 @@ export class ConnectorServiceRequest implements IConnectorServiceRequest {
         } else {
             return seeds;
         }        
+    }
+
+    public getSeedProperty(seed: IDaodSeedItem, propertyName: string, isRequired?: boolean): any {
+        if (!seed) {
+            throw new Error('Can not get property from an empty or missing seed.');
+        }
+        const propertyValue = seed.properties && seed.properties[propertyName];
+        if (!propertyValue && isRequired) {
+            throw new Error(`Property '${propertyName}', is missing or empty on seed ${seed.seedId}.`);
+        }
+        return propertyValue;
     }
 
     private getSeeds(seeds: IDaodSeedItem[], typeIdsFilter?: string[]) : IDaodSeedItem[] {
