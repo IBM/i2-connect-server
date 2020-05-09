@@ -1,6 +1,23 @@
-import { IDaodResults } from "../service";
+import { IDaodResults, DaodResultsMarshaler } from "../service";
+import { UtilJsonata } from ".";
+import { Logger } from "@nestjs/common";
 
 export class UtilGeneral {
+
+    /**
+     * Process raw data into a valid results set (transform, validate, and remove duplicates)
+     * @param rawData json data returned from an external service or data source
+     * @param transform A valid jsonata transform specification
+     * @param logTransformOutput Whether to log transform output before validation (useful for debugging)
+     */
+    public static processResults(rawData: any, transform: string, logTransformOutput?: boolean): IDaodResults {
+        const resultsDto = UtilJsonata.transform(rawData, transform); // transform
+        if (logTransformOutput) {
+            Logger.debug(resultsDto);
+        }
+        const results = DaodResultsMarshaler.marshalFromDto(resultsDto); // validate
+        return UtilGeneral.removeDuplicates(results);
+    }
 
     /**
      * Clean an id to remove any invalid characters for i2 Analyze
