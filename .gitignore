@@ -35,6 +35,7 @@ lerna-debug.log*
 
 .env
 
-libs/connectors
-!libs/connectors/example
-!libs/connectors/starter
+!libs/connectors/
+libs/connectors/*
+!libs/connectors/example/
+!libs/connectors/starter/
