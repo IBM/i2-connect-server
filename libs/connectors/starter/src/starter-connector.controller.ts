@@ -18,7 +18,7 @@ export class StarterConnectorController extends BaseConnectorController {
     async executeAquireRequest(request: IConnectorServiceRequest): Promise<IDaodResults> {
         const serviceName = SERVICE_NAMES[request.params.serviceName];
         switch (serviceName) {
-            case SERVICE_NAMES.service_name_1:
+            case SERVICE_NAMES.servicename1:
                 return await this.connectorService.service1Aquire(request);
             default:
                 throw new NotImplementedException();
@@ -28,7 +28,7 @@ export class StarterConnectorController extends BaseConnectorController {
     async executeValidateRequest(request: IConnectorServiceRequest): Promise<IDaodValidationResponse> {
         const serviceName = SERVICE_NAMES[request.params.serviceName];
         switch (serviceName) {
-            case SERVICE_NAMES.service_name_1:
+            case SERVICE_NAMES.servicename1:
                 return await this.connectorService.service1Validate(request);
             default:
                 throw new NotImplementedException();

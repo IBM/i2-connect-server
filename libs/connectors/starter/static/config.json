@@ -1,8 +1,8 @@
 {
     "defaultValues": {
         "timeZoneId": "Europe/London",
-        "entityTypeId": "i2.person",
-        "linkTypeId": "i2.associate",
+        "entityTypeId": "i2.entity",
+        "linkTypeId": "i2.link",
         "linkDirection": "NONE"
     },
     "schemaUrl": "/schema",

@@ -4,7 +4,7 @@
     "author": "IBM",
     "name": "Starter Connector",
     "description": "A skeleton starter module for building new connectors.",
-    "autoLoad": false,
+    "autoLoad": true,
     "moduleFilePath": "/dist/libs/connectors/starter/src/starter-connector.module.js",
     "settings": [
         {
@@ -35,6 +35,11 @@
             "value": "./libs/connectors/starter/static/transforms",
             "type": "FOLDER",
             "extensionFilter": "transform.json"
+        },
+        {
+            "id": "starter.baseurl",
+            "value": "https://external/apiservice",
+            "type": "LITERAL"
         }
     ]
 }
