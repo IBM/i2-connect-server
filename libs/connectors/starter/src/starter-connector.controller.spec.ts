@@ -1,5 +1,5 @@
 
-import { Provider } from '@nestjs/common';
+import { Provider, HttpModule } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IConnectorProvidersFactory, IBaseConnectorService,
          BaseConnectorService, ConnectorsModule } from '@app/core/connectors';
@@ -10,6 +10,7 @@ import { ConnectorsSettingsModule } from '@app/core/settings';
 import { StarterConnectorController } from './starter-connector.controller';
 import { StarterConnectorService } from './starter-connector.service';
 import { CONNECTOR_ID } from './constants';
+import { StarterApiService } from './api/starter-api.service';
 
 
 describe('StarterConnectorController', () => {
@@ -20,6 +21,7 @@ describe('StarterConnectorController', () => {
 
         const app: TestingModule = await Test.createTestingModule({
             imports: [
+                HttpModule,
                 ConnectorsSettingsModule,
                 ConnectorsModule.registerAsync(new ConnectorFactory())
             ],
@@ -27,7 +29,8 @@ describe('StarterConnectorController', () => {
                 StarterConnectorController
             ],
             providers: [
-                StarterConnectorService
+                StarterConnectorService,
+                StarterApiService
             ],
         }).compile();
 
