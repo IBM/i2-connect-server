@@ -150,7 +150,7 @@ describe("Core/Config/Marshalers/ConnnectorConfigMarshaler - basic tests", () =>
             runFailureDataTest(dto, errorMsgToExpect);
         });
 
-        test("Marshal from DTO should fail - service, no aquire url", () => {
+        test("Marshal from DTO should fail - service, no acquire url", () => {
             const dto = cloneValidConfig().services[0];
             dto.acquireUrl = null;
             const errorMsgToExpect = /AcquireUrl property is missing/;

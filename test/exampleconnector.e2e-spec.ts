@@ -25,7 +25,7 @@ describe('ExampleConnectorController (e2e)', () => {
     }
 
     const connectorService = {
-        exampleSearchAquire: (serviceRequest: IConnectorServiceRequest) => testResults,
+        exampleSearchAcquire: (serviceRequest: IConnectorServiceRequest) => testResults,
         exampleSearchValidate: (serviceRequest: IConnectorServiceRequest) => validateResult,
     };
 

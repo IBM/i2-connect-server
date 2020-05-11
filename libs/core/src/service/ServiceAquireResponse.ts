@@ -4,13 +4,13 @@ import { ConnectorTypeMapService, PropertyMappingIdTypeEnum } from "../typemap/t
 import { IDaodResultsDto } from './dto/IDaodResultsDto';
 import { IServiceRequestQuery } from './marshalers/ServiceRequestQueryMarshaler';
 
-export interface IConnectorServiceAquireResponse {
+export interface IConnectorServiceAcquireResponse {
 
     readonly mappedResultsDto: IDaodResultsDto;
     
 }
 
-export class ConnectorServiceAquireResponse implements IConnectorServiceAquireResponse {
+export class ConnectorServiceAcquireResponse implements IConnectorServiceAcquireResponse {
 
     constructor(private _mappedResultsDto: IDaodResultsDto) {}
 
@@ -18,15 +18,15 @@ export class ConnectorServiceAquireResponse implements IConnectorServiceAquireRe
         return this._mappedResultsDto;
     }
 
-    public static createConnectorServiceAquireResponse(
+    public static createConnectorServiceAcquireResponse(
         daodResults: IDaodResults, 
         requestQuery: IServiceRequestQuery,
         typeMap: ITypeMap
-    ) : IConnectorServiceAquireResponse {
+    ) : IConnectorServiceAcquireResponse {
         
         const mappedDaodResults = this.getMappedResults(daodResults, typeMap, requestQuery.strict);
         const mappedDaodResultsDto = DaodResultsMarshaler.marshalToDto(mappedDaodResults);
-        return new ConnectorServiceAquireResponse(mappedDaodResultsDto);
+        return new ConnectorServiceAcquireResponse(mappedDaodResultsDto);
     }   
 
     /*

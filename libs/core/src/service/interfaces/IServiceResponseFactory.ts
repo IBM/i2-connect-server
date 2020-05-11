@@ -1,15 +1,15 @@
 import { IDaodResults } from "../marshalers/DaodResultsMarshaler";
 import { IDaodValidationResponse } from "../marshalers/DaodValidationResponseMarshaler";
-import { IConnectorServiceAquireResponse } from "../ServiceAquireResponse";
+import { IConnectorServiceAcquireResponse } from "../ServiceAcquireResponse";
 import { IConnectorServiceValidateResponse } from "../ServiceValidateResponse";
 import { IServiceRequestQuery } from "../marshalers/ServiceRequestQueryMarshaler";
 
 export interface IConnectorServiceResponseFactory {
 
-    createConnectorServiceAquireResponse(
+    createConnectorServiceAcquireResponse(
         daodResults: IDaodResults, 
         requestQuery: IServiceRequestQuery
-    ) : IConnectorServiceAquireResponse;
+    ) : IConnectorServiceAcquireResponse;
 
     createConnectorServiceValidateResponse(
         validationResponse: IDaodValidationResponse, 

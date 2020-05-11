@@ -32,7 +32,7 @@ export class StarterConnectorService implements OnModuleInit {
        return {};
     }
 
-    async service1Aquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async service1Acquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         /*
         const params =  StarterConditionsHelper.service1GetParams(serviceRequest);
         const apiData = await this.apiService.runSearchAsync('enter_api_url_here', params);

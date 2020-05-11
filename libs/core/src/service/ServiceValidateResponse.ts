@@ -17,7 +17,7 @@ export class ConnectorServiceValidateResponse implements IConnectorServiceValida
         return this._validationResponseDto;
     }
 
-    public static createConnectorServiceAquireResponse(
+    public static createConnectorServiceAcquireResponse(
         daodValidationResponse: IDaodValidationResponse, 
         requestQuery: IServiceRequestQuery
     ) : IConnectorServiceValidateResponse {

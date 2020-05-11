@@ -21,7 +21,7 @@ export class ExampleConnectorService implements OnModuleInit {
         Logger.debug('Initializing connector.', this.baseConnectorService.connectorName)
     }
 
-    async exampleSearchAquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSearchAcquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
 
         // Retrieve a header value and output to log
         const userAgent = serviceRequest.getHeader('user-agent');
@@ -50,7 +50,7 @@ export class ExampleConnectorService implements OnModuleInit {
         };
     }
 
-    async exampleSeededSearch1Aquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSeededSearch1Acquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         // Pull out the option using the identifier defined in the client configuration
         const useYearOfBirth = serviceRequest.getConditionValue<boolean>("useYearOfBirth");
 
@@ -83,7 +83,7 @@ export class ExampleConnectorService implements OnModuleInit {
         return results;
     }
 
-    async exampleSeededSearch2Aquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSeededSearch2Acquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         const seedEntities = serviceRequest.mappedPayload.seeds.entities;
 
         const responseEntities = [];
@@ -147,7 +147,7 @@ export class ExampleConnectorService implements OnModuleInit {
         return results;
     }
 
-    async exampleSeededSearch3Aquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSeededSearch3Acquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         const seeds = serviceRequest.mappedPayload.seeds;
 
         // We can assume that all the entities are people, as specified in the config
@@ -174,7 +174,7 @@ export class ExampleConnectorService implements OnModuleInit {
         return results;
     }
 
-    async exampleSeededSearch4Aquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSeededSearch4Acquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         const seeds = serviceRequest.mappedPayload.seeds;
         const responseLinks = seeds.links.map(link => {
             return {
@@ -195,7 +195,7 @@ export class ExampleConnectorService implements OnModuleInit {
         return results;
     }
 
-    async exampleSchemaExtensionAquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
+    async exampleSchemaExtensionAcquire(serviceRequest: IConnectorServiceRequest): Promise<IDaodResults> {
         // Hard-code the data; this example is about the schema and charting scheme fragments
         const tweets = [
             {

@@ -130,7 +130,7 @@ describe('ExampleConnectorController', () => {
                 requestParams,
                 rquestHeaders
             )
-            const result = await controller.executeAquireRequest(serviceRequest);
+            const result = await controller.executeAcquireRequest(serviceRequest);
             expect(result).not.toBeUndefined();
             expect(result).toHaveProperty('entities');
             expect(result).toHaveProperty(['entities', 0, 'id'], personData[0].id);

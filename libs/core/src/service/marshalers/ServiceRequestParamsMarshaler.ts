@@ -9,7 +9,7 @@ export interface IServiceRequestParams {
     serviceName: string;
     
     /**
-     * The method type of the service being requested, either an aquire (get data) or a validate (check request input).
+     * The method type of the service being requested, either an acquire (get data) or a validate (check request input).
      */
     methodType: IServiceRequestMethodTypeEnum;
 

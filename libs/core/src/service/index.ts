@@ -15,6 +15,6 @@ export * from './marshalers/ReloadCacheResponseMarshaler';
 export * from './pipes/ServiceRequestBody.pipe';
 export * from './pipes/ServiceRequestParam.pipe';
 export * from './pipes/ServiceRequestQuery.pipe';
-export * from './ServiceAquireResponse';
+export * from './ServiceAcquireResponse';
 export * from './ServiceRequest';
 export * from './ServiceValidateResponse';

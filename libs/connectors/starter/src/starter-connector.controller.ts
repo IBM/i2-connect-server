@@ -15,11 +15,11 @@ export class StarterConnectorController extends BaseConnectorController {
         super();
     }
 
-    async executeAquireRequest(request: IConnectorServiceRequest): Promise<IDaodResults> {
+    async executeAcquireRequest(request: IConnectorServiceRequest): Promise<IDaodResults> {
         const serviceName = SERVICE_NAMES[request.params.serviceName];
         switch (serviceName) {
             case SERVICE_NAMES.servicename1:
-                return await this.connectorService.service1Aquire(request);
+                return await this.connectorService.service1Acquire(request);
             default:
                 throw new NotImplementedException();
         } 

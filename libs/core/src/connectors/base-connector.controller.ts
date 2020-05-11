@@ -8,7 +8,7 @@ import { IConnectorServiceResponseFactory } from '../service/interfaces/IService
 import { IDaodResults } from '../service/marshalers/DaodResultsMarshaler';
 import { IDaodValidationResponse } from '../service/marshalers/DaodValidationResponseMarshaler';
 import { ConnectorServiceRequest, IConnectorServiceRequest } from '../service/ServiceRequest';
-import { IConnectorServiceAquireResponse, ConnectorServiceAquireResponse } from '../service/ServiceAquireResponse';
+import { IConnectorServiceAcquireResponse, ConnectorServiceAcquireResponse } from '../service/ServiceAcquireResponse';
 import { IConnectorServiceValidateResponse, ConnectorServiceValidateResponse } from '../service/ServiceValidateResponse';
 import { IServiceRequestQuery } from '../service/marshalers/ServiceRequestQueryMarshaler';
 import { ServiceRequestQueryPipe } from '../service/pipes/ServiceRequestQuery.pipe';
@@ -108,19 +108,19 @@ export abstract class BaseConnectorController
                                                                      requestParams, requestHeaders, typeMap);
     }
 
-    public createConnectorServiceAquireResponse(
+    public createConnectorServiceAcquireResponse(
         daodResults: IDaodResults, 
         requestQuery: IServiceRequestQuery
-    ) : IConnectorServiceAquireResponse {
+    ) : IConnectorServiceAcquireResponse {
         const typeMap = this.baseConnectorService.getTypeMap(requestQuery.siteid);
-        return ConnectorServiceAquireResponse.createConnectorServiceAquireResponse(daodResults, requestQuery, typeMap);
+        return ConnectorServiceAcquireResponse.createConnectorServiceAcquireResponse(daodResults, requestQuery, typeMap);
     }
 
     public createConnectorServiceValidateResponse(
         daodValidationResponse: IDaodValidationResponse, 
         requestQuery: IServiceRequestQuery
     ) : IConnectorServiceValidateResponse {
-        return ConnectorServiceValidateResponse.createConnectorServiceAquireResponse(daodValidationResponse, requestQuery);
+        return ConnectorServiceValidateResponse.createConnectorServiceAcquireResponse(daodValidationResponse, requestQuery);
     }
 
     protected logRequest(requestName: string, sourceIp: string, payload: any, query: IServiceRequestQuery, context?: string) {
@@ -143,8 +143,8 @@ export abstract class BaseConnectorController
     ): Promise<IDaodResultsDto | IDaodValidationResponseDto> {
         switch (serviceRequest.params.methodType) {
             case IServiceRequestMethodTypeEnum.ACQUIRE:
-                const daodResults = await this.executeAquireRequest(serviceRequest);
-                return this.createConnectorServiceAquireResponse(daodResults, serviceRequest.query).mappedResultsDto;
+                const daodResults = await this.executeAcquireRequest(serviceRequest);
+                return this.createConnectorServiceAcquireResponse(daodResults, serviceRequest.query).mappedResultsDto;
             case IServiceRequestMethodTypeEnum.VALIDATE:
                 const validateResponse = await this.executeValidateRequest(serviceRequest);
                 return this.createConnectorServiceValidateResponse(validateResponse, serviceRequest.query).validationResponseDto;
@@ -153,7 +153,7 @@ export abstract class BaseConnectorController
         }
     }
 
-    abstract async executeAquireRequest(
+    abstract async executeAcquireRequest(
         serviceRequest: IConnectorServiceRequest
     ): Promise<IDaodResults>;
 
